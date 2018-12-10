@@ -1,0 +1,45 @@
+2018-09-20 15:35:39,000 requests_test.py INFO [line:79] ***************正在执行第 1 条用例******************
+2018-09-20 15:35:39,001 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,001 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/account/userLogin.html
+2018-09-20 15:35:39,001 requests_test.py INFO [line:82] 请求参数: {'appid': 'www', 'loginKey': '15000000088', 'loginPwd': 'ss123456', 'type': '0'} 
+2018-09-20 15:35:39,300 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:39,300 requests_test.py ERROR [line:113] 用例测试失败
+2018-09-20 15:35:39,301 requests_test.py ERROR [line:114] 失败原因: ['字段 code:0 不一致', '字段 msg:SUCCESS 不一致'] 
+2018-09-20 15:35:39,301 requests_test.py INFO [line:116] ***********************************************************  
+2018-09-20 15:35:39,304 requests_test.py INFO [line:79] ***************正在执行第 2 条用例******************
+2018-09-20 15:35:39,304 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,305 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/account/userLogin.html
+2018-09-20 15:35:39,305 requests_test.py INFO [line:82] 请求参数: {'appid': 'www', 'loginKey': '15089514626', 'loginPwd': '1q2w3e4r5t1', 'type': '0'} 
+2018-09-20 15:35:39,566 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:39,567 requests_test.py ERROR [line:113] 用例测试失败
+2018-09-20 15:35:39,567 requests_test.py ERROR [line:114] 失败原因: ['期望结果多出了 code 这个字段'] 
+2018-09-20 15:35:39,567 requests_test.py INFO [line:116] ***********************************************************  
+2018-09-20 15:35:39,569 requests_test.py INFO [line:79] ***************正在执行第 3 条用例******************
+2018-09-20 15:35:39,569 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,569 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/account/userLogin.html
+2018-09-20 15:35:39,569 requests_test.py INFO [line:82] 请求参数: {'appid': 'www', 'loginKey': '150895146', 'loginPwd': '1q2w3e4r5t', 'type': '0'} 
+2018-09-20 15:35:39,837 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:39,838 requests_test.py ERROR [line:111] 用例测试通过
+2018-09-20 15:35:39,838 requests_test.py INFO [line:116] ***********************************************************  
+2018-09-20 15:35:39,856 requests_test.py INFO [line:79] ***************正在执行第 4 条用例******************
+2018-09-20 15:35:39,856 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,856 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/account/queryAccountInfo.html
+2018-09-20 15:35:39,856 requests_test.py INFO [line:82] 请求参数: {'mainKey': 'a3nzB4OAjwLMo8MxpcITcGuiBGvY73/rETGD0vQwZ7Q=', 'tokenKey': 'DAC50ED5E9285F5CEFFD2D1097034410', 'appid': 'www'} 
+2018-09-20 15:35:39,890 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:39,891 requests_test.py ERROR [line:113] 用例测试失败
+2018-09-20 15:35:39,891 requests_test.py ERROR [line:114] 失败原因: ['响应结果缺少了 data 这个字段', '字段 msg:您的账号已在其它地方登录，若不是本人操作，请注意账号安全 不一致', '字段 code:40002 不一致'] 
+2018-09-20 15:35:39,891 requests_test.py INFO [line:116] ***********************************************************  
+2018-09-20 15:35:39,892 requests_test.py INFO [line:79] ***************正在执行第 5 条用例******************
+2018-09-20 15:35:39,893 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,893 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/Commodity/findMyCommodity.html
+2018-09-20 15:35:39,893 requests_test.py INFO [line:82] 请求参数: {'mainKey': 'a3nzB4OAjwLMo8MxpcITcGuiBGvY73/rETGD0vQwZ7Q=', 'tokenKey': 'DAC50ED5E9285F5CEFFD2D1097034410', 'update_time_start': '2018-08-30+00:00:00', 'update_time_end': '2018-09-03+23:59:59', 'appid': 'www', 'type': 0} 
+2018-09-20 15:35:39,963 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:39,964 requests_test.py ERROR [line:113] 用例测试失败
+2018-09-20 15:35:39,964 requests_test.py ERROR [line:114] 失败原因: ['响应结果缺少了 data 这个字段', '字段 msg:您的账号已在其它地方登录，若不是本人操作，请注意账号安全 不一致', '字段 code:40002 不一致'] 
+2018-09-20 15:35:39,964 requests_test.py INFO [line:116] ***********************************************************  
+2018-09-20 15:35:39,966 requests_test.py INFO [line:79] ***************正在执行第 6 条用例******************
+2018-09-20 15:35:39,967 requests_test.py INFO [line:80] 请求方式: POST 
+2018-09-20 15:35:39,967 requests_test.py INFO [line:81] 请求接口: http://192.168.1.3:8081/RmarketShop/StoreCommodityOrder/findMyOrder.html
+2018-09-20 15:35:39,967 requests_test.py INFO [line:82] 请求参数: {'mainKey': 'a3nzB4OAjwLMo8MxpcITcGuiBGvY73/rETGD0vQwZ7Q=', 'tokenKey': 'DAC50ED5E9285F5CEFFD2D1097034410', 'appid': 'www', 'type': 0} 
+2018-09-20 15:35:40,032 requests_test.py INFO [line:104] ********************** 判断结果 *************************
+2018-09-20 15:35:40,036 requests_test.py ERROR [line:130] 接口请求失败,请检查地址和参数

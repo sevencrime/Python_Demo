@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2018-05-13 21:22:12
+# @Author  : onedi (onedi@qq.com)
+# @Link    : localhost
+# @Version : $Id$
+
+import xlrd,xlwt
+from xlutils.copy import copy
+from config.read_conf import read_conf
+import time
+import sys
+
+class writeExcel:
+
+	def __init__(self):
+		self.path = read_conf().read()		#获取用例路径
+
+	def write(self,res):
+
+		rb = xlrd.open_workbook(self.path,formatting_info=True)		#formatting_info=True,读取各种格式的信息
+		wb = copy(rb)
+		sheet = wb.get_sheet(0)
+
+		style = xlwt.XFStyle()
+		# 设置font字体
+		font = xlwt.Font()
+		font.name = 'Times New Roman'
+
+		if res['result'] == 'pass':
+			#修改字体颜色
+			font.colour_index = 3
+			#修改单元格背景色
+			style1 = xlwt.easyxf('pattern: pattern solid, fore_color light_green;')
+		elif res['result'] == 'fail':
+			#修改字体颜色
+			font.colour_index = 2
+			#修改单元格背景色
+			style1 = xlwt.easyxf('pattern: pattern solid, fore_color red;')
+		else :
+			#暂定
+			pass
+		style.font = font
+
+		sheet.write((res['rowNum']-1), 10, res['actual'])
+		sheet.write((res['rowNum']-1), 11, res['result'],style)
+		sheet.write((res['rowNum']-1), 12, res['times'])
+
+		t = time.strftime('%Y%m%d_%H%M%S',time.localtime(time.time()))
+		wb.save(os.getcwd()+'/report/report.xls' )
+
+if __name__ == '__main__':
+
+	res = {'rowNum': 4, 'times': 0.125856, 'actual': {'code': 2007, 'msg': '用户不存在', 'data': None}, 'result': 'Fail'}
+	writeExcel.write(res)

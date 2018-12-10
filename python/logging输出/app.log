@@ -1,0 +1,4 @@
+2018-09-07 log_demo.py[line:6] test info
+2018-09-07 log_demo.py[line:8] test warning
+2018-09-07 log_demo.py[line:9] test error
+2018-09-07 log_demo.py[line:10] test critical
