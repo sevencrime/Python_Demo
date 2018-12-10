@@ -5,7 +5,7 @@
 # @Link    : localhost
 # @Version : $Id$
 
-
+#处理数据
 def add(num):
     result = []
     res = []
