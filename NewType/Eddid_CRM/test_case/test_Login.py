@@ -31,31 +31,50 @@ class Test_Login(unittest.TestCase):
         print("结束driver")
         cls.driver.quit()
 
-    def test_login(self):
-        login_url = self.driver.current_url
-        print("login_url=", login_url)
-        # # 登录用户名
-        # self.el_user = self.driver.find_element_by_xpath(
-        #     "//input[@placeholder='用户名']")
-        # # 登录密码
-        # self.el_password = self.driver.find_element_by_xpath(
-        #     "//input[@placeholder='密码']")
-        # # 点击登录按钮
-        # self.btn_login = self.driver.find_element_by_xpath("//button")
-        # self.el_user.send_keys('admin')
-        # self.el_password.send_keys('abcd1234')
-        # self.btn_login.click()
-        elements.Element(self.driver)
-        element.Element.ele['el_user'].send_keys('admin')
-        element.Element.ele['el_password'].send_keys('abcd1234')
-        element.Element.ele['btn_login'].click()
+    def get_Element(self, mode, path):
+        mode_list = ['id', 'name', 'class', 'xpath', 'text', 'tag', 'css']
+        if mode == 'id':
+            pass
+        elif mode == 'name':
+            pass
+        elif mode == 'class':
+            pass
+        elif mode == 'xpath':
+            pass
+        elif mode == 'text':
+            pass
+        elif mode == 'tag':
+            pass
+        elif mode == 'css':
+            pass
+        else:
+            print("输入有误")
 
-        # self.driver.implicitly_wait(10)
-        time.sleep(3)
+
+    def test_login(self):
+        # login_url = self.driver.current_url
+        # print("login_url=", login_url)
+
+        # 登录用户名
+        self.el_user = self.driver.find_element_by_xpath(
+            "//input[@placeholder='用户名']")
+        # 登录密码
+        self.el_password = self.driver.find_element_by_xpath(
+            "//input[@placeholder='密码']")
+        # 点击登录按钮
+        self.btn_login = self.driver.find_element_by_xpath("//button")
+        self.el_user.send_keys('admin')
+        self.el_password.send_keys('abcd1234')
+        self.btn_login.click()
+
+        self.driver.implicitly_wait(10)
         index_url = self.driver.current_url
         print("index_url=", index_url)
-        cookie = self.driver.get_cookies()
-        print("cookie=", cookie)
+
+        text = self.driver.find_element_by_css_selector(
+            ".el-dropdown-link.el-dropdown-selfdefine ").text
+        # print("text=", text)
+        self.assertEquals(text, 'admin', msg='登录账户有误')
 
 
 if __name__ == '__main__':
