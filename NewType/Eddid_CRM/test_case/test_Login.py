@@ -13,8 +13,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import sys
 sys.path.append("D:/Python_Demo/NewType/Eddid_CRM/Controlelement")
-print(sys.path)
-import elements
 
 
 class Test_Login(unittest.TestCase):
