@@ -30,40 +30,40 @@ class Test_Login(unittest.TestCase):
         cls.driver.quit()
 
     def get_Element(self, mode, path):
-        mode_list = ['id', 'name', 'class', 'xpath', 'text', 'tag', 'css']
         if mode == 'id':
-            pass
+            comp = self.driver.find_element_by_id(path)
         elif mode == 'name':
-            pass
+            comp = self.driver.find_element_by_name(path)
         elif mode == 'class':
-            pass
+            comp = self.driver.find_element_by_class_name(path)
         elif mode == 'xpath':
-            pass
+            comp = self.driver.find_element_by_xpath(path)
         elif mode == 'text':
-            pass
+            comp = self.driver.find_element_by_link_text(path)
         elif mode == 'tag':
-            pass
+            comp = self.driver.find_element_by_tag_name(path)
         elif mode == 'css':
-            pass
+            comp = self.driver.find_element_by_css_selector(path)
         else:
-            print("输入有误")
+            print("path输入有误")
 
+        return comp
 
     def test_login(self):
         # login_url = self.driver.current_url
         # print("login_url=", login_url)
 
-        # 登录用户名
-        self.el_user = self.driver.find_element_by_xpath(
-            "//input[@placeholder='用户名']")
-        # 登录密码
-        self.el_password = self.driver.find_element_by_xpath(
-            "//input[@placeholder='密码']")
-        # 点击登录按钮
-        self.btn_login = self.driver.find_element_by_xpath("//button")
-        self.el_user.send_keys('admin')
-        self.el_password.send_keys('abcd1234')
-        self.btn_login.click()
+        # # 登录用户名
+        # self.el_user = self.driver.find_element_by_xpath(
+        #     "//input[@placeholder='用户名']")
+        # # 登录密码
+        # self.el_password = self.driver.find_element_by_xpath(
+        #     "//input[@placeholder='密码']")
+        # # 点击登录按钮
+        # self.btn_login = self.driver.find_element_by_xpath("//button")
+        # self.el_user.send_keys('admin')
+        # self.el_password.send_keys('abcd1234')
+        # self.btn_login.click()
 
         self.driver.implicitly_wait(10)
         index_url = self.driver.current_url
