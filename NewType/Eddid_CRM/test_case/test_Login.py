@@ -65,14 +65,22 @@ class Test_Login(unittest.TestCase):
         # self.el_password.send_keys('abcd1234')
         # self.btn_login.click()
 
+        self.get_Element(
+            'xpath', "//input[@placeholder='用户名']").send_keys('admin')
+        self.get_Element(
+            "xpath", "//input[@placeholder='密码']").send_keys('abcd1234')
+        self.get_Element("xpath", "//button").click()
+
         self.driver.implicitly_wait(10)
-        index_url = self.driver.current_url
+        # index_url = self.driver.current_url
         print("index_url=", index_url)
 
-        text = self.driver.find_element_by_css_selector(
-            ".el-dropdown-link.el-dropdown-selfdefine ").text
+        # text = self.driver.find_element_by_css_selector(
+        #     ".el-dropdown-link.el-dropdown-selfdefine ").text
+        text = self.get_Element(
+            "css", ".el-dropdown-link.el-dropdown-selfdefine ").text
         # print("text=", text)
-        self.assertEquals(text, 'admin', msg='登录账户有误')
+        self.assertEqual(text, 'admin', msg='登录账户有误')
 
 
 if __name__ == '__main__':
