@@ -11,76 +11,50 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import sys
-sys.path.append("D:/Python_Demo/NewType/Eddid_CRM/Controlelement")
 
 
 class Test_Login(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.driver = webdriver.Chrome(
+    def setUp(self):
+        self.driver = webdriver.Chrome(
             'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver')
-        cls.driver.get('http://eddid-bos-feature.ntdev.be')
+        self.driver.implicitly_wait(30)
+        self.url = 'http://eddid-bos-feature.ntdev.be'
 
-    @classmethod
-    def tearDownClass(cls):
+    def tearDown(self):
         time.sleep(5)
         print("结束driver")
-        cls.driver.quit()
-
-    def get_Element(self, mode, path):
-        if mode == 'id':
-            comp = self.driver.find_element_by_id(path)
-        elif mode == 'name':
-            comp = self.driver.find_element_by_name(path)
-        elif mode == 'class':
-            comp = self.driver.find_element_by_class_name(path)
-        elif mode == 'xpath':
-            comp = self.driver.find_element_by_xpath(path)
-        elif mode == 'text':
-            comp = self.driver.find_element_by_link_text(path)
-        elif mode == 'tag':
-            comp = self.driver.find_element_by_tag_name(path)
-        elif mode == 'css':
-            comp = self.driver.find_element_by_css_selector(path)
-        else:
-            print("path输入有误")
-
-        return comp
+        self.driver.quit()
 
     def test_login(self):
-        # login_url = self.driver.current_url
-        # print("login_url=", login_url)
 
-        # # 登录用户名
-        # self.el_user = self.driver.find_element_by_xpath(
-        #     "//input[@placeholder='用户名']")
-        # # 登录密码
-        # self.el_password = self.driver.find_element_by_xpath(
-        #     "//input[@placeholder='密码']")
-        # # 点击登录按钮
-        # self.btn_login = self.driver.find_element_by_xpath("//button")
-        # self.el_user.send_keys('admin')
-        # self.el_password.send_keys('abcd1234')
-        # self.btn_login.click()
+        login_page = loginpage(self.driver, self.url)
 
-        self.get_Element(
-            'xpath', "//input[@placeholder='用户名']").send_keys('admin')
-        self.get_Element(
-            "xpath", "//input[@placeholder='密码']").send_keys('abcd1234')
-        self.get_Element("xpath", "//button").click()
+    # def test_login(self):
+    #     login_url = self.driver.current_url
+    #     print("login_url=", login_url)
 
-        self.driver.implicitly_wait(10)
-        # index_url = self.driver.current_url
-        print("index_url=", index_url)
+    #     # 登录用户名
+    #     self.el_user = self.driver.find_element_by_xpath(
+    #         "//input[@placeholder='用户名']")
+    #     # 登录密码
+    #     self.el_password = self.driver.find_element_by_xpath(
+    #         "//input[@placeholder='密码']")
+    #     # 点击登录按钮
+    #     self.btn_login = self.driver.find_element_by_xpath("//button")
+    #     self.el_user.send_keys('admin')
+    #     self.el_password.send_keys('abcd1234')
+    #     self.btn_login.click()
 
-        # text = self.driver.find_element_by_css_selector(
-        #     ".el-dropdown-link.el-dropdown-selfdefine ").text
-        text = self.get_Element(
-            "css", ".el-dropdown-link.el-dropdown-selfdefine ").text
-        # print("text=", text)
-        self.assertEqual(text, 'admin', msg='登录账户有误')
+    #     self.driver.implicitly_wait(10)
+    #     # index_url = self.driver.current_url
+    #     print("index_url=", index_url)
+
+    #     # text = self.driver.find_element_by_css_selector(
+    #     #     ".el-dropdown-link.el-dropdown-selfdefine ").text
+    #     text = elem['text'].text
+    #     # print("text=", text)
+    #     self.assertEqual(text, 'admin', msg='登录账户有误')
 
 
 if __name__ == '__main__':

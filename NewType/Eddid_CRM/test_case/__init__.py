@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Date    : 2018-04-24 16:52:57
-# @Author  : onedi (onedi@qq.com)
-
-
+# @Date    : 2018-12-22 15:59:24
+# @Author  : Onedi (Onedi@qq.com)
+# @Link    : ${link}
+# @Version : $Id$
