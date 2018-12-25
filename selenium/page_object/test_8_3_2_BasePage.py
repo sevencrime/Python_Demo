@@ -1,7 +1,5 @@
 # coding=utf-8
 '''
-Created on 2016-8-13
-@author: Jennifer
 Project:基础类BasePage，封装所有页面都公用的方法，
 定义open函数，重定义find_element，switch_frame，send_keys等函数。
 在初始化方法中定义驱动driver，基本url，title
@@ -55,7 +53,7 @@ class BasePage(object):
                 EC.visibility_of_element_located(loc))
             return self.driver.find_element(*loc)
         except:
-            print u"%s 页面中未能找到 %s 元素" % (self, loc)
+            print(u"%s 页面中未能找到 %s 元素" % (self, loc))
 
     # 重写switch_frame方法
     def switch_frame(self, loc):
@@ -75,4 +73,4 @@ class BasePage(object):
                 self.find_element(*loc).clear()
                 self.find_element(*loc).send_keys(vaule)
         except AttributeError:
-            print u"%s 页面中未能找到 %s 元素" % (self, loc)
+            print(u"%s 页面中未能找到 %s 元素" % (self, loc))

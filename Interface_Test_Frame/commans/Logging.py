@@ -9,10 +9,11 @@ import os
 import time
 import logging
 
+
 def logs():
 
-    t = time.strftime('%Y%m%d_%H%M',time.localtime(time.time()))
-    url_log = os.getcwd()+'/logs/run_result.log'
+    t = time.strftime('%Y%m%d_%H%M', time.localtime(time.time()))
+    url_log = os.getcwd() + '/logs/run_result.log'
     # url_log = os.getcwd()+'/logs/run_result.log'
     # 获取logger对象，设置日志级别
     logger = logging.getLogger(__name__)
@@ -24,13 +25,15 @@ def logs():
     handler.setLevel(logging.INFO)
 
     # 获取并设置文件处理器的日志格式
-    formatter = logging.Formatter('%(asctime)s %(filename)s %(levelname)s [line:%(lineno)d] %(message)s')
+    formatter = logging.Formatter(
+        '%(asctime)s %(filename)s %(levelname)s [line:%(lineno)d] %(message)s')
     handler.setFormatter(formatter)
 
     # 设置日志处理器
     logger.addHandler(handler)
 
     return logger
+
 
 if __name__ == '__main__':
     lg = logs()

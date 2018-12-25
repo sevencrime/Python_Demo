@@ -11,6 +11,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.dirname(os.getcwd())))
+from PageElement import LoginPage
 
 
 class Test_Login(unittest.TestCase):
@@ -28,33 +32,17 @@ class Test_Login(unittest.TestCase):
 
     def test_login(self):
 
-        login_page = loginpage(self.driver, self.url)
+        login_page = LoginPage.LoginPage(self.driver, self.url, "Eddid")
 
-    # def test_login(self):
-    #     login_url = self.driver.current_url
-    #     print("login_url=", login_url)
-
-    #     # 登录用户名
-    #     self.el_user = self.driver.find_element_by_xpath(
-    #         "//input[@placeholder='用户名']")
-    #     # 登录密码
-    #     self.el_password = self.driver.find_element_by_xpath(
-    #         "//input[@placeholder='密码']")
-    #     # 点击登录按钮
-    #     self.btn_login = self.driver.find_element_by_xpath("//button")
-    #     self.el_user.send_keys('admin')
-    #     self.el_password.send_keys('abcd1234')
-    #     self.btn_login.click()
-
-    #     self.driver.implicitly_wait(10)
-    #     # index_url = self.driver.current_url
-    #     print("index_url=", index_url)
-
-    #     # text = self.driver.find_element_by_css_selector(
-    #     #     ".el-dropdown-link.el-dropdown-selfdefine ").text
-    #     text = elem['text'].text
-    #     # print("text=", text)
-    #     self.assertEqual(text, 'admin', msg='登录账户有误')
+        # 打开浏览器
+        login_page.open()
+        # 输入用户名密码
+        login_page.input_username("admin")
+        login_page.input_password("abcd1234")
+        # 点击登录
+        login_page.click_submit()
+        # 断言userid
+        self.assertEqual("admin", login_page.show_userid(), "userid与登录账户不一致")
 
 
 if __name__ == '__main__':
