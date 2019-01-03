@@ -11,12 +11,12 @@ sys.path.append(os.path.abspath(os.path.dirname(os.getcwd())))
 from Commons import BasePage, Logging
 from selenium.webdriver.common.by import By
 
-class ApplyListPage():
+class ApplyListPage(BasePage.BasePage):
 
-    open_account_manager = (By.CLASS_NAME, ".el-icon-news")     #通过<i>标签定位
+    open_account_manager = (By.XPATH, "//span[contains(text(),'开户管理')]")     #通过<i>标签定位
     open_account_list = (By.LINK_TEXT, "开户列表")
 
-    account_manager = (By.CLASS_NAME, ".el-icon-edit-outline")  #通过<i>标签定位
+    account_manager = (By.XPATH, "//span[contains(text(),'账户管理')]")  #通过<i>标签定位
     transaction_account = (By.LINK_TEXT, "交易账户")
     bank_sub_account = (By.LINK_TEXT, "银行子账户")
 

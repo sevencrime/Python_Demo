@@ -34,9 +34,9 @@ def Logs():
 
     return logger
 
-def msg(*func):
+# def msg(*func):
 
-    if func == ''
+#     if func == ''
 
 
 
