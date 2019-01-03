@@ -50,7 +50,7 @@ class addApply(unittest.TestCase):
         #点击开户列表，判断
         applylistpage.click_open_account_list()
 
-        time.sleep(5)
+        # time.sleep(5)
         #点击新增
         mainpage.click_add()
 

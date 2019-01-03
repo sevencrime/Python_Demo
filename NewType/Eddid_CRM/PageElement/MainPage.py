@@ -10,6 +10,9 @@ import sys
 sys.path.append(os.path.abspath(os.path.dirname(os.getcwd())))
 from Commons import BasePage, Logging
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 class MainPage(BasePage.BasePage):
     log = Logging.Logs()
@@ -29,7 +32,9 @@ class MainPage(BasePage.BasePage):
 
     def click_add(self):
         self.log.info(self.find_element(*self.add_loc).text)
-        return self.find_element(*self.add_loc).click()
+        return WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(self.add_loc))
+        # return self.find_element(*self.add_loc).click()
 
     def click_update(self):
         return self.find_element(*self.update_loc).click()
