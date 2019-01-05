@@ -12,15 +12,17 @@ from Commons import BasePage, Logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
+
 
 
 class MainPage(BasePage.BasePage):
-    log = Logging.Logs()
+    # log = Logging.Logs()
 
     userid_loc = (By.CSS_SELECTOR, ".el-dropdown-link.el-dropdown-selfdefine ")
     submit_loc = (By.XPATH, "//button/span[contains(text(),'提交审核')]")
-    # add_loc = (By.XPATH, "//button/span[contains(text(),'新增')]")
-    add_loc = (By.XPATH, "//*[@id='main']/div[1]/div[2]/button[3]/span")
+    add_loc = (By.XPATH, "//button/span[contains(text(),'新增')]")
+    # add_loc = (By.XPATH, "//*[@id='main']/div[1]/div[2]/button[3]/span")
     update_loc = (By.XPATH, "//button/span[contains(text(),'修改')]")
     select_loc = (By.XPATH, "//button/span[contains(text(),'查看')]")
     
@@ -31,10 +33,11 @@ class MainPage(BasePage.BasePage):
         return self.find_element(*self.submit_loc).click()
 
     def click_add(self):
-        self.log.info(self.find_element(*self.add_loc).text)
-        return WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.add_loc))
-        # return self.find_element(*self.add_loc).click()
+        # self.log.info(self.find_element(*self.add_loc).text)
+
+        time.sleep(3)
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.add_loc)).click()
+
 
     def click_update(self):
         return self.find_element(*self.update_loc).click()

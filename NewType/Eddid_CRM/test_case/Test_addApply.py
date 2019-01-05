@@ -37,7 +37,7 @@ class addApply(unittest.TestCase):
         self.assertEqual("admin", login_page.show_userid(), "userid与登录账户不一致")
 
     def tearDown(self):
-        time.sleep(5)
+        time.sleep(10)
         print("结束driver")
         self.driver.quit()
 
