@@ -35,9 +35,9 @@ class MainPage(BasePage.BasePage):
     def click_add(self):
         # self.log.info(self.find_element(*self.add_loc).text)
 
-        time.sleep(3)
-        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.add_loc)).click()
-
+        # time.sleep(3)
+        # return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.add_loc)).click()
+        pass
 
     def click_update(self):
         return self.find_element(*self.update_loc).click()

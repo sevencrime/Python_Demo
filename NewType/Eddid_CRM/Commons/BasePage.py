@@ -80,3 +80,4 @@ class BasePage(object):
                 self.find_element(*loc).send_keys(vaule)
         except AttributeError:
             print(u"%s 页面中未能找到 %s 元素" % (self, loc))
+

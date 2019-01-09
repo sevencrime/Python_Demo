@@ -52,7 +52,8 @@ class addApply(unittest.TestCase):
 
         # time.sleep(5)
         #点击新增
-        mainpage.click_add()
+        # mainpage.click_add()
+        self.driver.execute_script("arguments[0].scrollIntoView()", self.driver.find_element_by_xpath("//button/span[contains(text(),'新增')]"))
 
 
 
