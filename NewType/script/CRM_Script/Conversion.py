@@ -13,13 +13,14 @@
 #####################
 import xlrd,xlwt
 from hanziconv import HanziConv
+import os
 
 class reads:
 
     def read(self):
         # 获取excel接口文档的路径
         # path = read_conf().read()
-        path = 'D:/Python_Demo/python/示例/444.xls'
+        path = 'D:/Python_Demo/NewType/script/CRM_Script/4444.xls'
         # print(path)
         # 打开excel文件
         workbook = xlrd.open_workbook(path)
@@ -41,8 +42,14 @@ class reads:
             for j in range(ncols):
                 rows = table.cell(i,j).value
                 # print(rows)
+
                 if rows != '' and type(rows) == str :
-                    if u'\u4e00' <= rows <= u'\u9fff' :
+                    
+                    if i == 0:
+                        newsheet.write(i, j, rows)
+                        continue
+
+                    elif u'\u4e00' <= rows <= u'\u9fff' :
                 
                         # print(rows)
                         Conversion = HanziConv.toTraditional(rows)
@@ -51,8 +58,8 @@ class reads:
 
                 newsheet.write(i, j, rows)
 
+        newbook.save(os.getcwd()+'/newbook1.xls')
 
-        newbook.save('D:/Python_Demo/python/示例/newbook.xls')
 
 
 

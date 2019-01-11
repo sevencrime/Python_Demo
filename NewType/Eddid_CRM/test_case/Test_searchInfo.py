@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Date    : 2019-01-03 13:56:31
+# @Date    : 2019-01-11 18:17:27
 # @Author  : Onedi (Onedi@qq.com)
 # @Link    : ${link}
 # @Version : $Id$
+
+
 
 import unittest
 from selenium import webdriver
@@ -19,7 +21,7 @@ from PageElement.ApplyListPage import *
 from PageElement.MainPage import *
 from Commons import Logging
 
-class addApply(unittest.TestCase):
+class searchInfo(unittest.TestCase):
 
     def setUp(self):
         # self.log.info("正在执行Test_Login")
@@ -42,7 +44,7 @@ class addApply(unittest.TestCase):
         print("结束driver")
         self.driver.quit()
 
-    def test_addApply(self):
+    def test_searchInfo(self):
         applylistpage = ApplyListPage(self.driver, self.url, "Eddid")
         mainpage = MainPage(self.driver, self.url, "Eddid")
 
@@ -50,11 +52,9 @@ class addApply(unittest.TestCase):
         applylistpage.click_open_account_manager()
         #点击开户列表，判断
         applylistpage.click_open_account_list()
+        #点击下拉
+        mainpage.click_searchInfo()
 
-        # time.sleep(5)
-        #点击新增
-        mainpage.click_add()
-        # self.driver.execute_script("arguments[0].scrollIntoView()", self.driver.find_element_by_xpath("//button/span[contains(text(),'新增')]"))
 
 
 
