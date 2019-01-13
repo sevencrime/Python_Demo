@@ -23,6 +23,8 @@ from Commons import Logging
 
 class searchInfo(unittest.TestCase):
 
+    log = Logging.Logs()
+
     def setUp(self):
         # self.log.info("正在执行Test_Login")
 
@@ -54,8 +56,6 @@ class searchInfo(unittest.TestCase):
         applylistpage.click_open_account_list()
         #点击下拉
         mainpage.click_searchInfo()
-
-
 
 
 if __name__ == '__main__':
