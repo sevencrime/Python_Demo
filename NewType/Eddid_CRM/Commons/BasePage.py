@@ -57,8 +57,7 @@ class BasePage(object):
             # 注意：以下入参本身是元组，不需要加*
             # WebDriverWait(self.driver, 10).until(
             #     EC.element_to_be_clickable(loc))
-            
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 20).until(
                 EC.visibility_of_element_located(loc))
 
             return self.driver.find_element(*loc)

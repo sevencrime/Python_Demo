@@ -54,6 +54,9 @@ class searchInfo(unittest.TestCase):
         applylistpage.click_open_account_manager()
         #点击开户列表，判断
         applylistpage.click_open_account_list()
+
+        #等待CSS.Loading-Modal加载完成
+        mainpage.wait_LoadingModal()
         #点击下拉
         mainpage.click_searchInfo()
 

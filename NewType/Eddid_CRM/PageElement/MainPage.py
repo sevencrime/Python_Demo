@@ -27,24 +27,18 @@ class MainPage(BasePage.BasePage):
     select_loc = (By.XPATH, "//button/span[contains(text(),'查看')]")
 
     searchInfo_loc = (By.XPATH, "//input[@placeholder='请选择']")
-    dialog_loc = (By.CLASS_NAME, ".el-dialog__wrapper")
+    LoadingModal_loc = (By.CSS_SELECTOR, ".Loading-modal")
     
     def show_userid(self):
         return self.find_element(*self.userid_loc).text
 
+    #等待CSS.Loading-modal加载完成,防止报错:"Element is not clickable at point (347, 104). 
+    #   Other element would receive the click: <div class="Loading-modal"></div>"
+    def wait_LoadingModal(self):
+        WebDriverWait(self.driver, 20).until_not(
+            EC.presence_of_element_located(self.LoadingModal_loc))
+
     def click_searchInfo(self):
-        # time.sleep(3)
-        # self.log.info(self.searchInfo_loc)
-        # self.driver.implicitly_wait(30)
-
-        self.driver.execute_script("arguments[0].style", 
-            self.find_element(*self.dialog_loc))
-        self.log.info(self.driver.execute_script("arguments[0].style", 
-            self.find_element(*self.dialog_loc)))
-
-        
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.searchInfo_loc))
         return self.find_element(*self.searchInfo_loc).click()
 
     def click_submit(self):
