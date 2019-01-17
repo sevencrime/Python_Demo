@@ -22,33 +22,32 @@ class MainPage(BasePage.BasePage):
     userid_loc = (By.CSS_SELECTOR, ".el-dropdown-link.el-dropdown-selfdefine ")
     submit_loc = (By.XPATH, "//button/span[contains(text(),'提交审核')]")
     add_loc = (By.XPATH, "//button/span[contains(text(),'新增')]")
-    # add_loc = (By.XPATH, "//*[@id='main']/div[1]/div[2]/button[3]/span")
     update_loc = (By.XPATH, "//button/span[contains(text(),'修改')]")
     select_loc = (By.XPATH, "//button/span[contains(text(),'查看')]")
-
-    searchInfo_loc = (By.XPATH, "//input[@placeholder='请选择']")
+    StatusSelect_loc = (By.XPATH, '//*[@id="main"]/div[1]/div[1]/div[1]/div/div/div/input')
+    # StatusSelect_loc = (By.XPATH, "//input[@placeholder='请选择']")
+    StatusOption_loc = (By.XPATH, '/html/body/div[3]/div[1]/div[1]/ul/li[2]')
     LoadingModal_loc = (By.CSS_SELECTOR, ".Loading-modal")
     
-    def show_userid(self):
-        return self.find_element(*self.userid_loc).text
-
     #等待CSS.Loading-modal加载完成,防止报错:"Element is not clickable at point (347, 104). 
     #   Other element would receive the click: <div class="Loading-modal"></div>"
     def wait_LoadingModal(self):
-        WebDriverWait(self.driver, 20).until_not(
+        WebDriverWait(self.driver, 10, 0.5).until_not(
             EC.presence_of_element_located(self.LoadingModal_loc))
 
-    def click_searchInfo(self):
-        return self.find_element(*self.searchInfo_loc).click()
+    def show_userid(self):
+        return self.find_element(*self.userid_loc).text
+
+    def click_StatusSelect(self):
+        return self.find_element(*self.StatusSelect_loc).click()
+
+    def click_StatusOption(self):
+        return self.find_element(*self.StatusOption_loc)
 
     def click_submit(self):
         return self.find_element(*self.submit_loc).click()
 
     def click_add(self):
-        # self.log.info(self.find_element(*self.add_loc).text)
-
-        # time.sleep(3)
-        # return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(*self.add_loc)).click()
         return self.find_element(*self.add_loc).click()
 
     def click_update(self):

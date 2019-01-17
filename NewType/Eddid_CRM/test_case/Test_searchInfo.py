@@ -58,7 +58,15 @@ class searchInfo(unittest.TestCase):
         #等待CSS.Loading-Modal加载完成
         mainpage.wait_LoadingModal()
         #点击下拉
-        mainpage.click_searchInfo()
+        mainpage.click_StatusSelect()
+
+        #选择下拉内容
+        # mainpage.click_StatusOption()
+        op = self.driver.find_elements_by_css_selector('.el-select-dropdown.el-popper')
+        self.driver.execute_script('arguments[0].style.display="block";', op[2])
+        self.log.info(op[2].text)
+        op[2].click()
+
 
 
 if __name__ == '__main__':

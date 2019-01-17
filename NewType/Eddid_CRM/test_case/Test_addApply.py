@@ -51,7 +51,8 @@ class addApply(unittest.TestCase):
         #点击开户列表，判断
         applylistpage.click_open_account_list()
 
-        # time.sleep(5)
+        mainpage.wait_LoadingModal()
+
         #点击新增
         mainpage.click_add()
         # self.driver.execute_script("arguments[0].scrollIntoView()", self.driver.find_element_by_xpath("//button/span[contains(text(),'新增')]"))
