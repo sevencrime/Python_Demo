@@ -6,7 +6,6 @@
 # @Version : $Id$
 
 import requests 
-import json
 url = 'https://eddid-api.ntdev.be/eddid-api-uat/public/lead/findSimilarLead'
 headers = {
     'Content-Type' : 'application/json' ,
