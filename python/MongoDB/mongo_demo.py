@@ -15,7 +15,7 @@ collection = db['student']
 
 # 插入数据,返回InsertOneResult对象，调用inserted_id属性获取_id
 # result = collection.insert_one({
-# 		'name' : 'onedi12' ,
+# 		'name' : 'onedi' ,
 # 		'age' : 201 ,
 # 		'gender' : 'male'
 # 	})
@@ -55,6 +55,26 @@ collection = db['student']
 # result5 = collection.update_one(condition, {'$set' : student})
 # print(result5)
 # print(result5.matched_count, result5.modified_count)
+
+#删除remove
+# result6 = collection.remove({'name' : 'Kyle'})
+# print(result6)
+
+# 删除delete_one 删除第一条符合条件的数据
+# result7 = collection.delete_one({'name' : 'onedi'})
+# print(result7)
+# print(result7.deleted_count)
+
+# delete _many删除所有符合条件的数据
+# result8 = collection.delete_many({'name' : 'onedi'})
+# print(result8.deleted_count)
+
+
+
+
+
+
+
 
 
 
