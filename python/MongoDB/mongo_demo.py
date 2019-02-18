@@ -7,11 +7,18 @@
 
 import pymongo
 #链接MongoDB
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+# client = pymongo.MongoClient("mongodb://localhost:27017/")
+# 连接语法mongodb://[username:password@]host1[:port1][,...hostN[:portN]]][/[database][?options]]
+client = pymongo.MongoClient("mongodb+srv://eddiddevadmin:atfxdev2018@dev-clientdb-nckz7.mongodb.net")
 # 指定数据库
 db = client['test']
 # 指定集合(表)
-collection = db['student']
+collection = db['lead']
+result = collection.find()
+print(result)
+for res in result:
+    print(res)
+
 
 # 插入数据,返回InsertOneResult对象，调用inserted_id属性获取_id
 # result = collection.insert_one({
@@ -23,7 +30,7 @@ collection = db['student']
 # print(result.inserted_id)
 
 #查询数据,find_one()只返回第一条数据,结果不存在会返回None
-# result1 = collection.find_one({'name' : 'onedi'})
+# result1 = collection.find_one({'email' : 'one22di@qq.com'})
 # print(result1)
 
 #find() 返回所有数据,需要遍历出来

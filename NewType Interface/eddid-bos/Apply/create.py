@@ -12,7 +12,7 @@ import random
 url = 'https://eddid-api.ntdev.be/eddid-api-uat/apply/create'
 headers = {
     'Content-Type' : 'application/json' ,
-    'X-Token' : 'eyJraWQiOiJSejNcLzBrMzY0alZZK2NVVUQ4bWpjdEhYdHgrWTNROENNXC9FcG52OGhXbkE9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI3YWYzYWRhOS0yZmY5LTQ1MWQtODdkNy0xNjI5ZWVjZWQyNDMiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbiJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY29nbml0bzpwcmVmZXJyZWRfcm9sZSI6ImFybjphd3M6aWFtOjo4MzI0MzE4NjQ2NjY6cm9sZVwvZGV2LWVkZGlkLWNvZ25pdG8tYWRtaW4tcm9sZSIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aGVhc3QtMV91OWZ6N2x5b04iLCJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiYWRtaW4iLCJjb2duaXRvOnJvbGVzIjpbImFybjphd3M6aWFtOjo4MzI0MzE4NjQ2NjY6cm9sZVwvZGV2LWVkZGlkLWNvZ25pdG8tYWRtaW4tcm9sZSJdLCJhdWQiOiI1MTNqZmNrdHIxbTZldm9nZnF1N29zazdwYSIsImV2ZW50X2lkIjoiNjFiMDU2MDItMzEwMy0xMWU5LWI3YTQtMGIwOTIyZDhhYWZhIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NTAyMjI2MjAsImV4cCI6MTU1MDIyNjIyMCwiaWF0IjoxNTUwMjIyNjIwLCJmYW1pbHlfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbjEyM0BxcS5jb20ifQ.L8zfNjWnI4rJA2TpR-9XcdkdaEz7c0ypIaRYh45KyD_ix1FqMK9RO9OolUf6kiwjmSf0VKgdnu4ZfLyD9W8RsinAW4WuaApNfHx1wUxmN_e1g6JYyRaUWpzIruRjR2VRtuZzoI16OyKxojBkWNNXePST9akTXnG7BHbmsqErHs4aEaYc0uU5Gh9apcTgyDmJQR680KCnoRv8USkrM3HOshzhwLC817XYByTV9E77Dz-YEe1aoMeapArR_IBdiQ_X8NHMR9wIw338gZQ0bW-l1Fwih9nOHeMS-5-2PYdUFBfh_TPgBPb8MEZ-NIKZRAFmEX1xbb8lvxXh2t-lAg34RA'
+    'X-Token' : 'eyJraWQiOiJSejNcLzBrMzY0alZZK2NVVUQ4bWpjdEhYdHgrWTNROENNXC9FcG52OGhXbkE9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI3YWYzYWRhOS0yZmY5LTQ1MWQtODdkNy0xNjI5ZWVjZWQyNDMiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbiJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY29nbml0bzpwcmVmZXJyZWRfcm9sZSI6ImFybjphd3M6aWFtOjo4MzI0MzE4NjQ2NjY6cm9sZVwvZGV2LWVkZGlkLWNvZ25pdG8tYWRtaW4tcm9sZSIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aGVhc3QtMV91OWZ6N2x5b04iLCJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiYWRtaW4iLCJjb2duaXRvOnJvbGVzIjpbImFybjphd3M6aWFtOjo4MzI0MzE4NjQ2NjY6cm9sZVwvZGV2LWVkZGlkLWNvZ25pdG8tYWRtaW4tcm9sZSJdLCJhdWQiOiI1MTNqZmNrdHIxbTZldm9nZnF1N29zazdwYSIsImV2ZW50X2lkIjoiZjVjZjcwZGItMzEwOS0xMWU5LWIwMzYtN2Q5Y2ZjMjAxZTZhIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NTAyMjU0NDYsImV4cCI6MTU1MDIyOTA0NiwiaWF0IjoxNTUwMjI1NDQ2LCJmYW1pbHlfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbjEyM0BxcS5jb20ifQ.VWPFCkQeariwYBc2MLymhD4gv2DJ52mR5gRKyxEKjjAcdWsDdonL072xL1vL3qkpkuk9Wn4QwsWi9SPscJukCSbzJOYGNhYOWQrYp5jYyO0InZaZ8nQKVVVZRF91Izls1_dZMCcp6soMPDcUkriKRKwgqzAtt5p3Nkk5ZqkS7hF12E2zHBkCqdQLpxM85-J_ExwXjRVPOy6Sf3mKT0Cxoim0Ii8k4h2GB0nZYEDbnpQDL-UzskM8AI_CGkf6VoB58DqSrVN_GgPb3lg25kP2YPe4R3xlk0vWiA7SiEi6geQ4zC-Y3TXHJPaFDP0XjWFvzhUXOfWzuVGJoT4Na2ejMA'
 }
 
 
@@ -70,9 +70,9 @@ data = {
     "termsAndConditionsOfBusiness": "Y",
     "client": [{
         "riskInfo": {
-            "passportMaterial": ["publicDropbox/BcPJde9SCkFdFssQaJz9KYRNMbfyYm2t.jpeg"],
-            "addressVerificationMaterials": ["publicDropbox/8pRBJ8ssFtibKGdF4kw1r6irkijMe9G2.jpeg"],
-            "bankCardMaterials": ["publicDropbox/NRccBw9hbN2ZXXbfajmrZw4TR17HNS3F.jpeg"],
+            "passportMaterial": [""],
+            "addressVerificationMaterials": [""],
+            "bankCardMaterials": [""],
             "referralCode": "",
             "isErr": False,
             "errText": "",
@@ -126,8 +126,8 @@ data = {
         "nationality": "AFG",
         "birthPlace": "AGO",
         "birthday": 894384000000,
-        "email": "onedi2s%s@qq.com" %(random.randint(0,100000)),
-        # "email": "onedi@qq.com" ,
+        # "email": "onedi2s%s@qq.com" %(random.randint(0,100000)),
+        "email": "onedi@qq.com" ,
         "phoneAreaCode": "HKG",
         "phone": "43564253%s" %(random.randint(0,100002)),
         # "phone": "15089514626" ,
