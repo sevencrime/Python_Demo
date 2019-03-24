@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 # @Date    : 2019-02-17 18:04:49
 # @Author  : onedi (onedi@qq.com)
 # @Link    : localhost

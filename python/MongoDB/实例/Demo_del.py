@@ -28,7 +28,7 @@ applylist = []
 applyinfolist = []
 
 for res in result:
-    # print(res)
+    print(res)
     accountlist.append(res['accountId'][0])
     if res['applyId'] != [] :
         applylist.append(res['applyId'][0])
@@ -44,9 +44,9 @@ for ac in accountlist:
     # print(ac)
     # print(type(ac))
     res = account.find_one({'_id':ObjectId(ac)})
-    dels = account.delete_many({'_id':ObjectId(ac)})
-    print("************删除account***********")
-    print(dels.deleted_count)
+    # dels = account.delete_many({'_id':ObjectId(ac)})
+    # print("************删除account***********")
+    # print(dels.deleted_count)
 
 
 
@@ -56,9 +56,9 @@ applys = db['apply']
 for ap in applylist:
     # print(ap)
     res = applys.find_one({'_id':ObjectId(ap)})
-    dels = applys.delete_many({'_id':ObjectId(ap)})
-    print("************删除apply***********")
-    print(dels.deleted_count)
+    # dels = applys.delete_many({'_id':ObjectId(ap)})
+    # print("************删除apply***********")
+    # print(dels.deleted_count)
     if res != None:
         applyinfolist.append(res['applyInfoIds'])
     # print(res)
@@ -74,13 +74,13 @@ for info in applyinfolist:
             # print(info[i])
             # print("**********大于1************")
             res = applyinfo.find_one({'_id':ObjectId(info[i])})
-            dels = applyinfo.delete_many({'_id':ObjectId(info[i])})
-            print("************删除apply_info***********")
-            print(dels.deleted_count)
+            # dels = applyinfo.delete_many({'_id':ObjectId(info[i])})
+            # print("************删除apply_info***********")
+            # print(dels.deleted_count)
 
     else:
         res = applyinfo.find_one({'_id':ObjectId(info[0])})
-        dels = applyinfo.delete_many({'_id':ObjectId(info[0])})
-        print("************删除apply_info***********")
-        print(dels.deleted_count)
+        # dels = applyinfo.delete_many({'_id':ObjectId(info[0])})
+        # print("************删除apply_info***********")
+        # print(dels.deleted_count)
 

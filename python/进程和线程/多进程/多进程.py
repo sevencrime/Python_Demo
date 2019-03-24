@@ -5,21 +5,18 @@
 # @Link    : localhost
 # @Version : $Id$
 
+import multiprocessing
 
-from multiprocessing import Process
-import time
-class MyProcess(Process):
-    def __init__(self, arg):
-        super(MyProcess, self).__init__()
-        self.arg = arg
+def process(num):
+    print ('Process:', num)
 
-    def run(self):
-        print ('say hi', self.arg)
-        time.sleep(1)
-    
 if __name__ == '__main__':
-
-    for i in range(10):
-        p = MyProcess(i)
+    for i in range(5):
+        p = multiprocessing.Process(target=process, args=(i,))
         p.start()
 
+    print('CPU number:' + str(multiprocessing.cpu_count()))
+    for p in multiprocessing.active_children():
+        print('Child process name: ' + p.name + ' id: ' + str(p.pid))
+ 
+    print('Process Ended')

@@ -33,9 +33,9 @@ a1 = 'hello world'
 # print(re.split('[a,c]','ddabcffadacd'))     # 有顺序的分割，中间同时出现ac所以会出现空
 # print(re.sub('e.l','wc',a1))        # 替换
 #
-# a3 = re.compile('\.com')    # 多次用的方法，提高效率
-# a3_out = a3.findall('www.example.com.cn')
-# print(a3_out)
+a3 = re.compile('\.com')    # 多次用的方法，提高效率
+a3_out = a3.findall('www.example.com.cn')
+print(a3_out)
 '''
 博客园 Infi_chu
 '''
@@ -110,10 +110,10 @@ a1 = 'hello world'
 '''
 较高级的用法
 '''
-print(re.search('(?P<id>\d{3}z)/(?P<name>\w{3})','weeew34ttt123/ooo'))       # ?P<>起名的格式，名字放在<>中，后面为匹配规则
-print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group())
-print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group('id'))
-print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group('name'))
+# print(re.search('(?P<id>\d{3}z)/(?P<name>\w{3})','weeew34ttt123/ooo'))       # ?P<>起名的格式，名字放在<>中，后面为匹配规则
+# print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group())
+# print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group('id'))
+# print(re.search('(?P<id>\d{3})/(?P<name>\w{3})','weeew34ttt123/ooo').group('name'))
 
 '''
 方法总结
