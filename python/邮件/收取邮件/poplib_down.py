@@ -39,7 +39,7 @@ def get_details(msg):
 
 pop_server = "imap.sina.cn"  #pop服务器
 username = "15089514626@sina.cn"    
-password = "shengqile"
+password = "Abcd1234"
 
 server = poplib.POP3(pop_server)    #链接服务器
 # server.set_debuglevel(1)    #可选项,打印客户端和服务端的交互信息
