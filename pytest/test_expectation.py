@@ -1,31 +1,35 @@
-# content of test_expectation.py
+#!/usr/bin/env/python
+# -*-coding:utf-8-*-
 
-# coding:utf-8
 import pytest
 
-class Test:
-    def RiskTolerance(num=None):
 
-        def wrapper(func):
-            def inner_wrapper(self, *args, **kwargs):
-                print("正在执行用例 :", func.__name__)
-                print(*args, **kwargs, "sssssssssssssssssssssss")
-                return func(self, *args, **kwargs)
-            return inner_wrapper
-        return wrapper
+# 测试账号数据
+test_user_data = ["admin1", "admin2"]
+
+def debug(func):
+    def wrapper(*args, **kwargs):  # 指定宇宙无敌参数
+        return func(*args, **kwargs)
+    return wrapper  # 返回
+
+@pytest.fixture(scope="module")
+def login(request):
+    user = request.param
+    print("登录账户：%s"%user)
 
 
+@debug
+@pytest.mark.parametrize('totalAnnual', ['小于20万', '20-50万', '50-100万', '大于100万'])
+@pytest.mark.usefixtures('login')
+@pytest.mark.parametrize("login", test_user_data, indirect=True)
+def test_login(totalAnnual):
+    """登录用例"""
 
+    a = login
+    print("测试用例中login的返回值:%s" % a)
+    print(totalAnnual)
+    assert a != ""
 
-
-    @RiskTolerance(num=1)
-    @pytest.mark.parametrize("test_input,expected",
-                             [ ("3+5", 8),
-                               ("2+4", 6),
-                               ("6 * 9", 42),
-                             ])
-    def test_eval(self, test_input, expected):
-        assert eval(test_input) == expected
 
 if __name__ == "__main__":
     # pytest.main(["-s", "test_expectation.py", "--html=report.html"])

@@ -6,8 +6,20 @@ from flask import Flask, request
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
-    return '<h1> Home </h1>'
+def home1():
+    return '<h1> 1 </h1>'
+
+@app.route('/hello', methods=['GET'])
+def home2():
+    return '<h1> 2 </h1>'
+
+@app.route('/world', methods=['GET'])
+def home3():
+    return "pass"
+
+@app.route('/index', methods=['GET'])
+def index():
+    return {"msg" : "success"}
 
 @app.route('/signin', methods=['GET'])
 def signin_form():
@@ -19,6 +31,8 @@ def signin_form():
 
 @app.route("/signin", methods=['POST'])
 def signin():
+    assert 1 == 2
+
     if request.form['username'] == 'admin' and request.form['password']=='password':
         return '<h3>Hello,admin!</h3>'
 

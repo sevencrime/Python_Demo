@@ -1,21 +1,32 @@
-# coding: GBK
-
-
-#×¢ÊÍ
-
-count = 10  #È«¾Ö±äÁ¿  
-  
-def print_local():  
-    count = 10  #¾Ö²¿±äÁ¿£¬Õâ¸öcount¸²¸ÇÁËÈ«¾Ö±äÁ¿count£¬Õâ2¸öÊÇ²»Í¬µÄ±äÁ¿¡£ 
-    if count == count:
-    
-        print(count)  
-      
-def print_global():  
-    print(count) #ÕâÀïµÄcountÊÇ×îÉÏÃæµÄÈ«¾Ö±äÁ¿àŞ  
-      
-print_local()  
-print_global()  
 
 
 
+phone = None
+email = None
+idNumber = None
+
+idpfind = {}
+applyfind = {}
+
+# åˆ¤æ–­ä»»ä¸€ä¸€ä¸ªä¸ä¸ºç©º
+if not phone and not email and not idNumber:
+    print("æ‰‹æœºå·, é‚®ç®±, èº«ä»½è¯å¿…é¡»å¡«ä¸€ä¸ª")
+else:
+    if phone:
+        idpfind.update({"phone_number":{"$regex":".+{}".format(phone)}})
+        applyfind.update({"phone":phone})
+
+    if email:
+        idpfind.update({"email": email})
+        applyfind.update({"email": email})
+
+    if idNumber:
+        applyfind.update({"idNumber":idNumber})
+        if not idpfind:
+            idpfind.update({"idNumber":idNumber})
+
+print(idpfind)
+print(applyfind)
+
+if not idpfind or not applyfind:
+    print("æŸ¥è¯¢æ¡ä»¶ä¸èƒ½ä¸ºç©º")

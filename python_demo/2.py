@@ -1,11 +1,6 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
 
-arr = []
 
-print(arr)
-print(type(arr))
+class Test:
+    print("ssssss")
 
-if arr == [] :
-    print("Sss")
 

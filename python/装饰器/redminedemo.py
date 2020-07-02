@@ -32,4 +32,6 @@ def do(something):
 
 if __name__ == '__main__':
     say('hello')
+    say('hello')
+    say('hello')
     # do("my work")

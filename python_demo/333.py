@@ -1,14 +1,25 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2018-08-28 15:32:40
-# @Author  : onedi (onedi@qq.com)
-# @Link    : ${link}
-# @Version : $Id$
+import time, threading
 
-import demjson
+import sys, os
+from multiprocessing import Pool
+from multiprocessing import Process
+from locust import User, TaskSet, task, events
+import subprocess
 
-data =  { 'a' : 1, 'b' : 2, 'c' : 3, 'd' : 4, 'e' : 5 } 
+def run(i):
+    if i == "master":
+        # subprocess.Popen(("python"),shell=True).wait()
+        print(i)
+        a = os.popen("python").read()
+        print(a)
+    else:
+        print(i)
+        os.popen("python").read()
 
-json = demjson.encode(data)
-demjson.
-print(json)
+t = threading.Thread(target=run, args=("master",))
+t.start()
+
+for i in range(5):
+    t1 = threading.Thread(target=run, args=(i,))
+    t1.start()
+

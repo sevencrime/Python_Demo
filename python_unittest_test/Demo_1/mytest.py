@@ -9,12 +9,12 @@ class mytest(unittest.TestCase):
     # 所有case执行之前准备一次环境
     @classmethod
     def setUpClass(cls):
-        print("This setUpClass() method only called once.")
+        print("setUpClass")
 
     # 所有case执行之后清理环境
     @classmethod
     def tearDownClass(cls):
-        print("This tearDownClass() method only called once too.")
+        print("tearDownClass")
     
     ##初始化工作
     def setUp(self):
@@ -30,6 +30,7 @@ class mytest(unittest.TestCase):
         
         
     def test_sub(self):
+        print("mytest_____test_sub")
         self.assertEqual(myclass.sub(2, 1), 1, 'test sub fail')   
         
         

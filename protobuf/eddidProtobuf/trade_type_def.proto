@@ -1,0 +1,453 @@
+syntax = "proto3";
+
+package eddid.trade_gateway;
+option java_multiple_files = true;
+
+enum TradeMsgType
+{
+    UNKNOWN_MSG                   = 0;          // 未知的消息类型
+    
+    HEARTBEAT_REQ                 = 1;          // 心跳同步请求
+    HEARTBEAT_RSP                 = 2;          // 心跳同步应答
+                                                
+    VELOCITY_REQ                  = 3;          // 测速请求
+    VELOCITY_RSP                  = 4;          // 测速应答
+    
+    //--------- 交易使用命令字----------------------------------------------------
+    ACCOUNT_HEARTBEAT_REQ         = 101;        // 交易账户心跳请求 
+    ACCOUNT_HEARTBEAT_RSP         = 102;        // 交易账户心跳应答
+                                  
+    LOGIN_REQ                     = 103;        // 用户登录请求
+    LOGIN_RSP                     = 104;        // 用户登录应答
+                                  
+    LOGOUT_REQ                    = 105;        // 用户登出请求
+    LOGOUT_RSP                    = 106;        // 用户登出应答
+                                  
+    MOD_PWD_REQ                   = 107;       // 用户修改密码请求
+    MOD_PWD_RSP                   = 108;       // 用户修改密码应答 
+                                  
+    // 用户查询类                      
+    QUERY_LOGIN_STATUS_REQ        = 120;       // 查询用登录状态 
+    QUERY_LOGIN_STATUS_RSP        = 121;       // 查询用登录状态 
+                                  
+    QUERY_BALANCE_REQ             = 124;       // 查询账户资金请求
+    QUERY_BALANCE_RSP             = 125;       // 查询账户资金应答
+                                  
+    QUERY_ORDER_REQ               = 126;       // 查询当日委托请求
+    QUERY_ORDER_RSP               = 127;       // 查询当日委托应答
+                                  
+    QUERY_POSITION_SUM_REQ        = 128;       // 查询持仓汇总请求
+    QUERY_POSITION_SUM_RSP        = 129;       // 查询持仓汇总应答 
+                                  
+    QUERY_POSITION_DETAIL_REQ     = 130;       // 查询持仓明细请求
+    QUERY_POSITION_DETAIL_RSP     = 131;       // 查询持仓明细应答  
+                                  
+    QUERY_DEAL_REQ                = 132;       // 查询成交请求
+    QUERY_DEAL_RSP                = 133;       // 查询成交应答 
+                                  
+    QUERY_HIS_ORDER_REQ           = 134;       // 查询历史委托请求
+    QUERY_HIS_ORDER_RSP           = 135;       // 查询历史委托应答
+                                  
+    QUERY_HIS_DEAL_REQ            = 136;       // 查询历史成交请求
+    QUERY_HIS_DEAL_RSP            = 137;       // 查询历史成交应答
+                                  
+    QUERY_HIS_POSITION_REQ        = 139;       // 查询历史持仓请求
+    QUERY_HIS_POSITION_RSP        = 140;       // 查询历史持仓应答
+                                  
+    QUERY_FEE_INFO_REQ            = 141;       // 查询费用请求
+    QUERY_FEE_INFO_RSP            = 142;       // 查询费用应答
+    
+    QUERY_ACCOUNT_MARGIN_RENT_REQ = 143;       // 账户保证金计算参数请求
+    QUERY_ACCOUNT_MARGIN_RENT_RSP = 144;       // 账户保证金计算参数应答 
+    
+    QUERY_ACCOUNT_FEE_RENT_REQ    = 145;       // 查询客户手续费计算参数请求
+    QUERY_ACCOUNT_FEE_RENT_RSP    = 146;       // 查询客户手续费计算参数应答  
+    
+     // 免密查询
+    QUERY_FREE_BALANCE_REQ        = 147;       // 免密查询资金请求
+    QUERY_FREE_BALANCE_RSP        = 148;       // 免密查询资金应答 
+    
+    // 用户委托类 
+    INSERT_ORDER_REQ              = 190;       // 用户委托请求
+    INSERT_ORDER_RSP              = 191;       // 用户委托应答 
+                                  
+    CANCEL_ORDER_REQ              = 192;       // 用户撤单请求
+    CANCEL_ORDER_RSP              = 193;       // 用户撤单应答
+    
+    MOD_ORDER_REQ                 = 194;       // 用户改单请求
+    MOD_ORDER_RSP                 = 195;       // 用户改单应答
+    
+    // 主推消息类
+    PUSH_ORDER                    = 260;       // 委托回报，主推消息 
+    PUSH_DEAL                     = 261;       // 成交回报，主推消息
+    
+    PUSH_FUND                     = 262;       // 资金变动主推消息
+    
+    PUSH_POSITION                 = 263;       // 持仓变动主推消息
+    
+    PUSH_PROFIT                   = 264;       // 持仓盈亏变动主推消息
+    
+    PUSH_ACCOUNT_DISCONNECT       = 265;       // 主推交易账户与柜台断线通知  
+    
+
+    // 其他 在此添加 
+
+}
+
+// 业务处理相关错误码
+enum TreadeRetCode
+{
+    // 错误码分段规则
+    // 0为处理成功
+    // 1 ------ 4000 港期，国际期货处理失败的错误码
+    // 4001 ---- 8000 境外期权业务处理失败的错误码
+    // 80001 ---- 12000 外汇业务处理失败的错误码
+    // 12001 ----- 16000 国内期货业务处理失败的错误码
+    // 16001 ---- 20000 国内期权业务处理失败的错误码
+    // 20001 ---- 26000 港美股业务处理失败的错误码
+    // 26001 ---- 35000 国内A股业务处理失败错误码
+    SUCCESSED = 0;                              // 业务处理成功
+}
+
+
+// -----------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------- 期货交易使用枚举类型----------------------------------------------------------
+
+// 委托类型 
+enum FutureOrderType
+{
+    UNKNOWN_ORDERTYPE             = 0;             // 未知委托类型
+    ANY                           = 1;             // 任意价
+    MARKET_PRICE                  = 2;             // 市价
+    LIMIT_PRICE                   = 3;             // 限价
+    BEST_PRICE                    = 4;             // 最优价
+    LAST_PRICE                    = 5;             // 最新价
+    LAST_PRICE_PLUS_ONE_TICK      = 6;             // 最新价浮动上浮1个tick
+    LAST_PRICE_PLUS_TWO_TICK      = 7;             // 最新价浮动上浮2个tick
+    LAST_PRICE_PLUS_THREE_TICK    = 8;             // 最新价浮动上浮3个tick
+    ASK_PRICE_ONE                 = 9;             // 卖一价
+    ASK_PRICE_ONE_PLUS_ONE_TICK   = 10;            // 卖一价浮动上浮1个tick
+    ASK_PRICE_ONE_PLUS_TWO_TICK   = 11;            // 卖一价浮动上浮2个tick
+    ASK_PRICE_ONE_PLUS_THREE_TICK = 12;            // 卖一价浮动上浮3个tick
+    BID_PRICE_ONE                 = 13;            // 买一价
+    BID_PRICE_ONE_PLUS_ONE_TICK   = 14;            // 买一价浮动上浮1个tick
+    BID_PRICE_ONE_PLUS_TWO_TICK   = 15;            // 买一价浮动上浮2个tick
+    BID_PRICE_ONE_PLUS_THREE_TICK = 16;            // 买一价浮动上浮3个tick
+    FIVE_LEVEL_PRICE              = 17;            // 五档价
+    STOP_MARKET                   = 18;            // 市价止损
+    STOP_LIMIT                    = 19;            // 限价止损
+    OPTION_EXEC                   = 20;            // 期权行权
+    OPTION_ABANDON                = 21;            // 放弃行权
+    ICE_BERG                      = 22;            // 冰山单
+    GHOST                         = 23;            // 影子单
+    HKEX_AUCTION                  = 24;            // 港交所竞价单
+    SWAP                          = 25;            // 互换单
+    STOCK_LOCK                    = 26;            // 证券锁定
+    STOCK_UNLOCK                  = 27;            // 证券解锁
+    ENHANCE                       = 28;            // 增强限价单
+}
+
+// 开平标志
+enum OffsetType
+{
+    UNKNOWN_OFFSET     = 0;     // 未知的开平标志 "N"
+    OPEN               = 1;     // 开仓
+    CLOSE              = 2;     // 平仓
+    CLOSE_TODAY        = 3;     // 平今
+    CLOSE_YESTERDAY    = 4;     // 平昨
+    FORCE_CLOSE        = 5;     // 强平
+    FORCEOFF           = 6;     // 强减
+    LOCAL_FORCE_CLOSE  = 7;     // 本地强平
+}
+
+
+// 持仓方向
+enum PositionDirectType
+{
+    UNKNOWN_DIRECT       = 0;                   // 未知持仓类型
+    NET                  = 1;                   // 净持仓 净持仓是指某个商品某个月份合约持仓的多单和空单相抵后的余额，称为净持仓，简称净仓,
+                                                // 比如某个商品某月份合约持有多单20手，空单15手，则净持仓就是5手多单
+    LONG                 = 2;                   // 多头持仓
+    SHORT                = 3;                   // 空头持仓
+    GROSS                = 4;                   // 综合持仓
+}
+
+// 持仓类型
+enum PositionType 
+{
+    UNKNOWN_POSITION    = 0;                    // 未知的持仓类型
+    YESTERDAY_POS       = 1;                    // 昨仓
+    TODAY_POS           = 2;                    // 今仓
+}
+
+// 保证金计算方法
+enum CalculateModeType
+{
+    UNKNOWN_TYPE     = 0; 
+    COMBINE          = 1;                       // 比例+定额（仅限手续费）大于0.01部分为定额，小于0.01部分为比例，如：0.001为比例收取1%
+    PERCENTAGE       = 2;                       // 比例
+    QUOTA            = 3;                       // 定额
+    CHAPERCENTAGE    = 4;                       // 差值比例
+    CHAQUOTA         = 5;                       // 差值定额
+    DISCOUNT         = 6;                       // 折扣
+}
+
+
+// 投保标志
+enum HedgeFlagType
+{
+    UNKNOWN_HEDGE       = 0;     // 未知的投保标志
+    HEDGING             = 1;     // 保值
+    SPECULATE           = 2;     // 投机   即风险单
+    ARBITRAGE           = 3;     // 套利
+    MARKETMAKER         = 4;     // 做市商
+    RESERVE             = 5;     // 备兑
+}
+
+// 委托状态 
+enum OrderStatusType
+{
+    UNKNOWN_ORDER_STATUS = 0;        // 未知
+    SUBMIT               = 1;        // 提交
+    ENQUEUE              = 2;        // 已报单 已排队
+    ACCEPT               = 3;        // 已受理
+    NOENQUEUE            = 4;        // 不在队列
+    OUTSTANDING          = 5;        // 部分成交
+    ALLTRADE             = 6;        // 全成  完全成交
+    CANCELING            = 7;        // 正在撤单 待撤消(排队临时状态)
+    CANCELED             = 9;        // 已撤 完全撤单
+    REJECTED             = 10;       // 错误单 指令失败
+    CANOUT               = 11;       // 部成部撤 已撤余单
+    NOTTOUCHED           = 12;       // 尚未触发
+    TOUCHED              = 13;       // 已触发
+    TRIGGERING           = 14;       // 策略待触发
+    EXCTRIGGERING        = 15;       // 交易所待触发
+    MODIFY               = 16;       // 待修改（排队临时状态）
+    CANCELREJECTED       = 17;       // 撤单已被拒绝
+    MODIFYREJECTED       = 18;       // 改单已被拒绝
+    CANCELFAIL           = 19;       // 撤单失败
+    SUPPENDED            = 20;       // 已挂起
+    DELETEDFOREXPIRE     = 21;       // 到期已删除
+    DELETED              = 22;       // 策略删除
+    APPLY                = 23;       // 已申请——行权、弃权、套利等申请成功
+}
+
+// 委托操作类型
+enum OrderOpType
+{
+    UNKNOWN_ORDER_OP = 0;         // 未知
+    INSERT           = 1;         // 下单
+    MODIFY_TYPE      = 2;         // 改单
+    CANCEL           = 3;         // 撤单
+    SUSPEND          = 4;         // 挂起
+    ACTIVATE         = 5;         // 激活
+    DELETE           = 6;         // 删除（系统）
+}
+
+
+// 报单强平原因
+enum ForceCloseReaseonType
+{
+    UNKNOWN_FORCE_CLOSE           = 0;             // 未知的强平原因
+    NOT_FORCE_CLOSE               = 1;             // 非强平
+    LACK_DEPOSIT                  = 2;             // 资金不足
+    CLIENT_OVER_POSITION_LIMIT    = 3;             // 客户超仓
+    MEMBER_OVER_POSTION_LIMIT     = 4;             // 会员超仓
+    NOT_MULTIPLE                  = 5;             // 持仓非整数倍
+    VIOLATION                     = 6;             // 违规
+    OTHER                         = 7;             // 其他
+    PERSON_DELIV                  = 8;             // 自然人临近交割
+}
+
+// 报单类型
+enum OrderTypeType
+{
+    UNKNOWN_ORDER                = 0;            // 未知的委托类型  
+    ORDER_NORMAL                 = 1;            // 正常
+    DERIVE_FROM_QUOTE            = 2;            // 报价衍生
+    DERIVE_FROM_COMBINATION      = 3;            // 组合衍生
+    COMBINATION                  = 4;            // 组合
+    CONDITIONAL_ORDER            = 5;            // 条件单
+    ORDER_SWAP                   = 6;            // 互换单
+}
+
+// 成交量类型
+enum DealVolumeConditionType
+{
+    UNKNOWN_DEAL_VOL  = 0;                      // 未知的成交量类型 
+    ANY_VOL           = 1;                      // 任意数量
+    MIN_VOL           = 2;                      // 最小数量
+    ALL_VOL           = 3;                      // 全部数量
+}
+
+// 触发条件类型
+enum ContingentConditionType
+{
+    UNKNOWN_CONTINGENT        = 0;             // 未知的触发条件
+    IMMEDIATELY               = 1;             // 立即
+    TOUCH                     = 2;             // 止损
+    TOUCH_PROFIT              = 3;             // 止盈
+    PARKED_ORDER              = 4;             // 预埋单
+    LAST_PRICE_GT_STOP_PRICE  = 5;             // 最新价大于条件价
+    LAST_PRICE_GE_STOP_PRICE  = 6;             // 最新价大于等于条件价
+    LAST_PRICE_LT_STOP_PRICE  = 7;             // 最新价小于条件价
+    LAST_PRICE_LE_STOP_PRICE  = 8;             // 最新价小于等于条件价
+    ASK_PRICE_GT_STOP_PRICE   = 9;             // 卖一价大于条件价
+    ASK_PRICE_GE_STOP_PRICE   = 10;            // 卖一价大于等于条件价
+    ASK_PRICE_LT_STOP_PRICE   = 11;            // 卖一价小于条件价
+    ASK_PRICE_LE_STOP_PRICE   = 12;            // 卖一价小于等于条件价
+    BID_PRICE_GT_STOP_PRICE   = 13;            // 买一价大于条件价
+    BID_PRICE_GE_STOP_PRICE   = 14;            // 买一价大于等于条件价
+    BID_PRICE_LT_STOP_PRICE   = 15;            // 买一价小于条件价
+    BID_PRICE_LE_STOP_PRICE   = 16;            // 买一价小于等于条件价
+}
+
+// 期权类型
+enum OptionType
+{
+    UNKNOWN_OPT   = 0;                          // 未知期权类型 
+    CALL          = 1;                          // 看涨期权
+    PUT           = 2;                          // 看跌期权
+}
+
+// 期权定价方式
+enum OptionStrikeType
+{
+    UNKNOWN_STRIKE    = 0;                      // 未知的定价方式
+    CONTINENTAL       = 1;                      // 欧式定价
+    AMERICAN          = 2;                      // 美式
+    BERMUDA           = 3;                      // 百慕大
+}
+
+// 期权执行结果类型
+enum OptionExecResultType
+{
+    UNKNOWN_EXEC_RESULT = 0;                     // 未知
+    NO_EXEC             = 1;                     // 没有执行
+    CANCELED_OPT        = 2;                     // 已经取消
+    EXEC_OK             = 3;                     // 执行成功
+    NO_POSITION         = 4;                     // 期权持仓不足
+    NO_DEPOSIT          = 5;                     // 资金不足
+    NO_PARTICIPANT      = 6;                     // 会员不存在
+    NO_CLIENT           = 7;                     // 客户不存在
+    NO_INSTRUMENT       = 8;                     // 合约不存在
+    NO_RIGHT            = 9;                     // 没有权限
+    INVALID_VOL         = 10;                    // 无效的数量
+    NO_ENOUGH_HIS_TRADE = 11;                    // 没有足够历史成交
+}
+
+// 组合合约组合类型
+enum CombinationType
+{
+    UNKNOWN_COMB      = 0;                     // 未知
+    FUTURE            = 1;                     // 期货组合
+    COMBT_BUL         = 2;                     // 垂直价差BUL
+    COMBT_BER         = 3;                     // 垂直价差BER
+    COMBT_STD         = 4;                     // 跨式组合
+    COMBT_STG         = 5;                     // 宽跨式组合
+    COMBT_PRT         = 6;                     // 备兑组合
+    COMBT_CLD         = 7;                     // 时间价差组合
+}
+
+// 结算类型
+enum SettleFlag
+{
+    UNKNOWN_SETTLE_FLAG = 0;     // 未知结算标志
+    AUTO_SETTLE         = 1;     // 自动结算
+    MANUAL_SETTLE       = 2;     // 人工结算
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------ 公共使用类型--------------------------------------------------------------------------------------
+
+// 账户状态
+enum AccountStatus
+{
+    UNKNOWN_STATUS   = 0;       // 未知状态  
+    NORMAL_ACCOUNT   = 1;       // 正常 
+    CANCEL_ACCOUNT   = 2;       // 销户
+    SLEEP            = 3;       // 休眠
+    FROZEN           = 4;       // 冻结
+}
+
+// 买卖方向 BuySellDirectType
+enum BSDirectType
+{
+    UNKNOWN_BS         = 0;                     // 未知的买卖方向
+    BUY                = 1;                     // 买
+    SELL               = 2;                     // 卖 
+}
+
+// 有效日期类型
+enum TimeConditionType
+{
+    UNKNOWN_COND         = 0;                // 未知
+    IOC                  = 1;                // 立即完成，否则撤销 FOK  即时全部
+    GFS                  = 2;                // 本节有效
+    GFD                  = 3;                // 当日有效
+    GTD                  = 4;                // 指定日期前有效 限时有效
+    GTC                  = 5;                // 撤销前有效 长期有效
+    GFA                  = 6;                // 集合竞价有效
+    FAK                  = 7;                // 立即成交剩余自动撤消 即时部分
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+// 账户类型
+enum AccountType
+{
+    UNKNOWN_ACCOUNT = 0;
+    ACCOUNT         = 1;        // 资金账号
+    SEAT_NO         = 2;        // 股东代码
+    TRADE_CARD      = 3;        // 交易卡
+    BANK_CARD       = 4;        // 银行卡
+    SH_A_SEAT_NO    = 5;        // 沪A股东代码 
+    SH_B_SEAT_NO    = 6;        // 沪B股东代码 
+    SZ_A_SEAT_NO    = 7;        // 深A 股东代码
+    SZ_B_SEAT_NO    = 8;        // 深B 股东代码
+    CUSTOMER        = 9;        // 客户号
+}
+
+// 客户类型
+enum ClientAccType
+{
+    UNKNOWN_CLINET_ACC  = 0; 
+    CLIENT_CASH         = 1;     // 现金客户
+    CLIENT_MARGIN       = 2;     // 保证金账户
+    CLIENT_HOUSE        = 3;     // House
+    CLIENT_STAFF        = 4;     // Staff
+}
+
+// 客户交易状态 
+enum AccountRightType
+{
+    UNKNOWN_RIGHT     = 0;       // 未知权限
+    ACC_RIGHT_NORMAL  = 1;       // 正常交易状态 
+    ACC_RIGHT_NOTRADE = 2;       // 禁止交易
+    ACC_RIGHT_CLOSE   = 3;       // 只可平仓
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+package example;
+
+message people
+{
+    required string name = 1;
+    optional int32 height = 2;
+}

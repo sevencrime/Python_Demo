@@ -1,22 +1,32 @@
 #coding=utf-8
 from appium import webdriver
+import time, os, re
 
-desired_caps = {}
-desired_caps['platformName'] = 'Android'
-desired_caps['platformVersion'] = '6.0.1'
-desired_caps['deviceName'] = '3709b61'
-desired_caps['appPackage'] = 'com.android.calculator2'
-desired_caps['appActivity'] = '.Calculator'
+platformVersion = os.popen('adb shell getprop ro.build.version.release').read()
+# 读取设备 id
+readDeviceId = list(os.popen('adb devices').readlines())
+# 正则表达式匹配出 id 信息
+deviceId = re.findall(r'^\w*\b', readDeviceId[1])[0]
 
-driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+desired_caps = {
+    'platformName': 'Android',
+    'platformVersion': platformVersion,
+    'deviceName': deviceId,
+    'appPackage': 'io.newtype.eddid.app',
+    'appActivity': 'com.bartech.app.main.launcher.LauncherActivity',
+    # 'unicodeKeyboard': True,
+    # 'resetKeyboard': True
+}
 
-driver.find_element_by_id("digit_1").click()
+driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 
-driver.find_element_by_id("op_add").click()
+# driver.find_element_by_id("digit_1").click()
 
-driver.find_element_by_id("digit_2").click()
+# driver.find_element_by_id("op_add").click()
 
-driver.find_element_by_id("eq").click()
+# driver.find_element_by_id("digit_2").click()
 
+# driver.find_element_by_id("eq").click()
+time.sleep(10)
 
 driver.quit()

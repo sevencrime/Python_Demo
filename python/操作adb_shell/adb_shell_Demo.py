@@ -66,14 +66,14 @@ class App_performance():
         cpu_msg = re.findall('TO..L.{11}', test)
         # print(cpu_msg)
         # cpu_msg = re.findall('TO..L.+', test.replace(' ',''))
-        # print(cpu_msg)
+        print(cpu_msg)
         print("APP的内存占用大小:", ''.join(cpu_msg))
 
 
 if __name__ == '__main__' :
     app_per = App_performance() #实例化类App_performance
-    app_per.cold_start_Time()   #获取冷启动时间
-    app_per.hot_start_Time()    #获取热启动时间
+    # app_per.cold_start_Time()   #获取冷启动时间
+    # app_per.hot_start_Time()    #获取热启动时间
     app_per.cpuinfo()             #CPU占用
 
 

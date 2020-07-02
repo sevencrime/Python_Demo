@@ -1,27 +1,23 @@
-import unittest
+import pytest
+
+@pytest.fixture(params=[
+    ('redis', '6379'),
+    ('elasticsearch', '9200')
+])
+def param(request):
+    return request.param
 
 
+@pytest.fixture(autouse=True)
+def db(param):
+    print('\nSucceed to connect %s:%s' % param)
 
-class BaseTestCase(unittest.TestCase):
+    yield
 
-	globals()["status"] = "aaaa"
+    print('\nSucceed to close %s:%s' % param)
 
-
-class TestCase1(BaseTestCase):
-
-	def test1_my_dict_key(self):
-		print("ddd", globals()["status"])
-		globals()["status"] = "bbbb"
-
-	def test2_kkk(self):
-		print("kkk", globals()["status"])
-
-class TestCase2(BaseTestCase):
-
-	def test_my_dict_value(self):
-
-		print("uuu", globals()["status"])
-
+def test_api():
+    assert 1 == 1
 
 if __name__ == "__main__":
-	unittest.main()
+	pytest.main(["-v", "test_sample.py"])

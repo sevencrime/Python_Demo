@@ -1,0 +1,785 @@
+syntax = "proto3";
+
+import "common_type_def.proto"; 
+import "trade_type_def.proto";
+
+package eddid.trade_gateway;
+option java_multiple_files = true;
+
+enum ProtoVersion
+{
+    VERSION_0 = 0;
+    VERSION_1 = 1;                              //  当前使用的业务协议版本号，
+}
+
+message TradeMsgCarrier
+{
+    uint64           series_id = 1;             // 序号(中台使用)
+    TradeMsgType     type      = 2;             // 交易消息类型
+    ProtoVersion     version   = 3;             // 协议版本号 
+    bytes            data      = 5;             // 交易协议数据
+}
+
+// 交易返回码
+message TradeRetCode
+{
+    TreadeRetCode code = 1;                     // 错误码
+    string        msg  = 2;                     // 错误消息
+}
+
+//-------------交易账户心跳请求------------------------------------------------------
+message AccountHeartBeatReq
+{
+    uint64 session_id        = 1;               // 会话ID
+    string account           = 2;                // 资金账号 
+    uint64 start_time_stamp  = 3;                // 发送请求的开始时间戳
+}
+
+message AccountHearBeatRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    string       account             = 3;       // 资金账号
+    uint64       start_time_stamp    = 4;       // 发起请求的时间戳 UTC时间戳
+    uint64       recv_req_time_stamp = 5;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 6;       // 发送数据的时间戳
+}
+//-----------------------------------------------------------------------------------------
+
+
+//------交易账户登录-------------------------------------------------------------------------
+message UsrLoginReq
+{
+    string account          = 1;                // 交易账户ID 
+    string pwd              = 2;                // 密码
+    string ip_address       = 3;                // IP 地址 
+    uint64 start_time_stamp = 4;                // 发送请求的开始时间戳
+}
+
+// 登录应答
+message UsrLoginRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    uint64       session_id          = 2;       // 会话ID
+    string       account             = 3;       // 账号 
+    string       last_login_ip       = 4;       // 上次登录IP 
+    uint64       last_login_time     = 5;       // 上次登录时间UTC时间戳
+    uint64       last_logout_time    = 6;       // 上次退出时间UTC时间戳
+    bool         is_need_mod_pwd     = 7;       // 是否需要修改密码
+    string       trade_date          = 8;       // 当前交易日
+    uint64       last_settle_time    = 9;       // 上次结算日期
+    uint64       start_time_stamp    = 10;      // 发起请求的时间戳 UTC时间戳
+    uint64       recv_req_time_stamp = 11;      // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 12;      // 发送数据的时间戳
+}
+//-----------------------------------------------------------------------------------------
+
+// --------------------------登出----------------------------
+message UsrLogoutReq
+{
+    uint64 session_id       = 1;                // 会话ID
+    string account          = 2;                // 账号 
+    string site             = 3;                // 站点
+    uint64 start_time_stamp = 4;                // 发起请求的时间戳 UTC时间戳
+}
+
+message UsrLogoutRsp
+{
+    TradeRetCode ret            = 1;            // 业务处理返回信息
+    string account              = 2;            // 账号 
+    
+    uint64 start_time_stamp     = 3;            // 发起请求的时间戳 UTC时间戳
+    uint64 recv_req_time_stamp  = 4;            // 接收到请求的时间戳
+    uint64 rsp_time_stamp       = 5;            // 发送数据的时间戳 
+}
+
+//----------------------------------------------------------------------
+
+//------------------修改密码---------------------------------
+message ModPassWordReq
+{
+    uint64 session_id        = 1;               // 会话ID
+    string account           = 2;               // 账户
+    string old_pwd           = 3;               // 原密码
+    string new_pwd           = 4;               // 新密码
+    
+    uint64 start_time_stamp  = 5;               // 发起请求的时间戳 UTC时间戳
+}
+
+message ModPassWordRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    string       account             = 3;       // 账户
+    uint64       start_time_stamp    = 4;       // 发起请求的时间戳 UTC时间戳
+    uint64       recv_req_time_stamp = 5;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 6;       // 发送数据的时间戳 
+}
+
+//--------------------查询类------------------
+message QueryLoginStatusReq
+{
+    uint64 session_id  = 1;                     // 会话ID
+    string account     = 2;                     // 账户
+    uint64 start_stamp = 3;                     // 发起请求的时间戳 UTC时间戳
+}
+
+message QueryLoginStatusRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    string       account             = 2;       // 账户
+    bool         is_disconnect       = 3;       // 账户是否已经与柜台断线
+    uint64       start_time_stamp    = 4;       // 发起请求的时间戳 UTC时间戳
+    uint64       recv_req_time_stamp = 5;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 6;       // 发送数据的时间戳 
+}
+
+// 资金查询请求
+message QueryFutureBalanceReq
+{
+    uint64 session_id       = 1;       // 会话ID
+    string account          = 2;       // 账户
+    uint64 start_time_stamp = 3;       // 发起请求的时间戳 UTC时间戳
+}
+
+message FutureBalance
+{
+    string              account                  = 1;  // 投资者账户
+    string              name                     = 2;  // 投资者名称
+    uint32              precision                = 3;  // 精度
+    common.CurrencyType currency                 = 4;  // 币种
+    
+    uint64              pre_balance              = 5;  // 昨结
+    uint64              pre_unexp_profit         = 6;  // 上日未到期平盈
+    uint64              pre_lme_position_profit  = 7;  // 上日LME持仓平盈
+    uint64              pre_equity               = 8;  // 上日权益
+    uint64              pre_available            = 9;  // 昨可用
+    uint64              pre_maket_equity         = 10; // 上日市值权益(动态盈亏)
+
+    uint64              available                = 11; // 可用
+    uint64              with_draw                = 12; // 可取
+   
+    uint64              adjust_value             = 13; // 资金调整
+    uint64              pledged                  = 14; // 质押资金
+
+    uint64              commission               = 15; // 手续费
+    uint64              fee                      = 16; // 交易费
+    uint64              account_fee              = 17; // 客户手续费
+    uint64              buy_freeze               = 18; // 买入冻结
+    uint64              buy_freeze_margin        = 19; // 冻结保证金
+    uint64              freeze_fee               = 20; // 冻结费用
+    uint64              sell_freeze              = 21; // 卖出冻结
+    uint64              sell_freeze_margin       = 22; // 卖出冻结保证金
+    uint64              close_profit             = 23; // 平仓盈亏
+    uint64              unexp_profit             = 24; // 未到期平盈
+    uint64              exp_profit               = 25; // 到期平仓盈亏
+    uint64              position_profit          = 26; // 不含LME持仓盈亏
+    uint64              lme_position_profit      = 27; // LME持仓盈亏
+    uint64              initial_margin           = 28; // 初始保证金
+    uint64              maintenance_margin       = 29; // 维持保证金
+    uint64              upper_inital_margin      = 30; // 上手初始保证金
+    uint64              upper_maintenance_margin = 31; // 上手维持保证金
+    uint64              discount                 = 32; // LME贴现
+    uint64              deposit                  = 33; // 入金
+    uint64              drawing                  = 34; // 出金
+
+    uint64              swap_in_value            = 35; // 汇入资金
+    uint64              swap_out_value           = 36; // 汇出资金
+    uint64              premium_income           = 37; // 权利金收取
+    uint64              premium_pay              = 38; // 权利金支付
+
+    uint64              balance                  = 39; // 结存
+    uint64              equity                   = 40; // 当日权益
+    uint64              market_equity            = 41; // 市值
+    uint64              auth_value               = 42; // 授信资金
+}
+
+message QueryFutureBalanceRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    string       account             = 2;       // 账户
+    uint64       start_time_stamp    = 3;       // 发起请求的时间戳 UTC时间戳
+    uint64       recv_req_time_stamp = 4;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 5;       // 发送数据的时间戳 
+    
+    FutureBalance sum_balance        = 6;       // 资金求和
+    repeated FutureBalance balances  = 7;       // 每个币种资金信息 
+}
+
+
+// 查询当日委托
+message QueryOrderReq
+{
+    uint64              session_id        = 1;       // 会话ID
+    string              account           = 2;       // 账户
+    common.ExchangeType exchange          = 3;       // 交易所
+    string              instr_code        = 4;       // 合约代码
+    BSDirectType        direct            = 5;       // 买卖方向
+    common.CategoryType category          = 6;       // 合约大类
+    common.ProductType  product           = 7;       // 品种类型 
+    FutureOrderType     type              = 8;       // 委托类型
+    TimeConditionType   time_cond         = 9;       // 时间条件
+    HedgeFlagType       hedge             = 10;      // 投保标志
+    string              req_id            = 11;      // 请求ID 
+    string              exchange_order_id = 12;      // 交易所委托序号
+    string              srv_flag          = 13;      // 服务器标识(易盛接口使用)
+    uint64              expireDateTime    = 14;      // 委托过期时间(GTD)时需要 日期时间戳
+    bool                is_risk           = 15;      // 是否是风险单
+    bool                is_add_one        = 16;      // 是否是T+1 After-Hours Trading Session 
+    uint32              page_num          = 17;      // 页码
+    uint32              request_num       = 18;      // 请求行数(用作分页处理),每页需要的行数
+    
+    uint64              start_time_stamp  = 19;      // 发起请求的时间戳
+}
+
+// 委托信息
+message FutureOrderInfo
+{
+    string              account            = 1;     // 账户
+    common.ExchangeType exchange           = 2;     // 交易所
+    string              instr_code         = 3;     // 合约代码
+    BSDirectType        direct             = 4;     // 买卖方向
+    common.CategoryType category           = 5;     // 合约大类
+    common.ProductType  product            = 6;     // 品种类型
+    uint32              precision          = 7;     // 精度
+    
+    FutureOrderType     type               = 9;     // 委托类型
+    TimeConditionType   time_codition      = 10;    // 有效期类型
+    string              expire_time        = 11;    // 有效期日期时间
+    bool                is_risk            = 12;    // 是否是风险单
+    OffsetType          offset             = 13;    // 开平标志
+    HedgeFlagType       hedge              = 14;    // 投保标志
+    
+    uint64              price              = 15;     // 价格
+    uint64              match_price        = 16;     // 成交价格
+    uint64              stop_price         = 17;     // 止损价（触发价）
+    uint32              vol                = 18;     // 报单量
+    OrderStatusType     status             = 19;     // 委托状态
+    uint64              average_price      = 20;     // 成交均价
+    uint32              deal_qty           = 21;     // 已成数量
+    string              order_no           = 22;     // 委托编号
+    
+    uint32              min_clip_size      = 23;     // 冰山单最小随机量
+    uint32              max_clip_size      = 24;     // 冰山单最大随机量
+    
+    uint32              calcel_qty         = 25;     // 已撤数量
+    
+    string              order_stream_id    = 26;     // 委托流水号
+    string              upper_no           = 27;     // 上手号
+    string              upper_channel_no   = 28;     // 上手通道号
+    
+    string              local_no           = 29;     // 本地流水号
+    string              upper_stream_no    = 30;     // 上手流水号
+    
+    bool                is_add_one         = 31;     // 是否T+1有效
+    uint64              usr_data           = 32;     // 用户数据
+    string              system_no          = 33;     // 系统号
+    string              exchange_system_no = 34;     // 交易所系统号
+    string              parent_system_no   = 35;     // 父单系统号
+    
+    uint64              local_time         = 36;     // 本地下单时间
+    uint64              update_time        = 37;     // 委托更新时间
+    
+    string              srv_flag           = 38;     // 服务器标识
+    TradeRetCode        ret                = 39;
+}
+
+message QueryOrderRsp
+{
+    TradeRetCode ret                 = 1;   // 业务处理返回信
+    string       account             = 2;   // 账户
+    uint64       start_time_stamp    = 3;   // 发起请求的时间戳 
+    uint64       recv_req_time_stamp = 4;   // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 5;   // 发送数据的时间戳 
+    
+    repeated FutureOrderInfo orders  = 6;
+}
+
+// 查询账户手续费计算参数
+message QueryAccountFeeRentReq
+{
+    uint64       session_id        = 1;   // 会话ID
+    string       account           = 2;   // 账户
+    uint64       start_time_stamp  = 3;   // 发起请求的时间戳 
+}
+
+message AccountFeeRent
+{
+    string              account         = 1;
+    uint32              precision       = 2;      // 精度
+    common.ExchangeType exchange        = 3;      // 交易所代码 
+    string              product_code    = 4;      // 品种代码
+    common.CategoryType category        = 5;      // 合约大类
+    common.ProductType  product         = 6;      // 品种类型 
+    CalculateModeType   type            = 7;      // 计算方法
+    common.CurrencyType currency        = 8;      // 币种
+    uint64              open_close_fee  = 9;      // 开平费用
+    uint64              close_today_fee = 10;     // 平今费用 
+    
+}
+
+message QueryAccountFeeRentRsp
+{
+    TradeRetCode               ret                 = 1;   // 业务处理返回信息
+    string                     account             = 2;   // 账户
+    repeated AccountFeeRent    fee_info            = 3;   // 费用计算信息结构 
+    uint64                     start_time_stamp    = 4;   // 发起请求的时间戳 
+    uint64                     recv_req_time_stamp = 5;   // 接收到请求的时间戳
+    uint64                     rsp_time_stamp      = 6;   // 发送数据的时间戳 
+}
+
+// 查询账户保证金计算
+message QueryAccountMarginRentReq
+{
+    uint64              session_id        = 1;       // 会话ID
+    string              account           = 2;       // 账户
+    common.ExchangeType exchange          = 3;       // 交易所
+    string              product_code      = 4;       // 品种代码
+    common.CategoryType category          = 6;       // 合约大类
+    common.ProductType  product           = 7;       // 品种类型 
+    uint64              rsp_time_stamp    = 8;       // 发送数据的时间戳 
+}
+
+message AccountMarginRentInfo
+{
+    uint32              precision          = 1;     // 精度
+    common.ExchangeType exchange           = 2;     // 交易所
+    string              product_code       = 3;     // 品种代码
+    common.CategoryType category           = 4;     // 合约大类
+    common.ProductType  product            = 5;     // 品种类型 
+    string              instr_code         = 6;     // 合约代码 
+    common.CurrencyType currency           = 7;     // 币种
+    CalculateModeType   type               = 8;     // 计算方法
+    uint64              initial_margin     = 9;     // 初始保证金 
+    uint64              maintenance_margin = 10;    // 维持保证金
+    uint64              sell_init_margin   = 11;    // 买初始保证金
+    uint64              sell_main_margin   = 12;    // 买维持保证金
+    uint64              lock_margin        = 13;    // 锁保证金
+
+}
+
+message QueryAccountMarginRentRsp
+{
+    TradeRetCode                   ret                 = 1;  // 业务处理返回信息
+    string                         account             = 2;  // 账户
+    repeated AccountMarginRentInfo margin_infos        = 3; 
+    uint64                         start_time_stamp    = 4;   // 发起请求的时间戳 
+    uint64                         recv_req_time_stamp = 5;   // 接收到请求的时间戳
+    uint64                         rsp_time_stamp      = 6;   // 发送数据的时间戳 
+}
+
+
+// 查询持仓汇总
+message QueryPositionSummaryReq
+{
+    uint64              session_id       = 1;    // 会话ID
+    string              account          = 2; 
+    common.ExchangeType exchange         = 3;
+    string              instr_code       = 4;
+    uint32              page_num         = 5;    // 页码
+    uint32              request_num      = 6;    // 请求行数
+    uint64              start_time_stamp = 7;    // 发起请求的时间戳
+}
+
+// 持仓信息
+message PositionInfo
+{
+    string                account             = 1;              // 账户ID
+    common.ExchangeType   exchange            = 2;              // 交易所ID
+    string                instr_code          = 3;              // 合约代码
+    common.CurrencyType   currency            = 4;              // 货币 
+    uint32                precision           = 5;              // 精度
+    
+    int32                 position            = 6;              // 持仓量
+    uint64                position_price      = 7;              // 持仓成本
+    uint64                average             = 8;              // 均价
+    uint64                open_cost           = 9;              // 开仓成本
+    uint64                position_profit     = 10;             // 持仓盈亏
+    uint64                lme_position_profit = 11;             // LME持仓盈亏
+    
+    uint64                calculate_price     = 12;             // 当前计算价 
+    
+    uint64                initial_margin      = 13;             // 初始保证金  
+    uint64                maintenance_margin  = 14;             // 维持保证金 
+    uint64                upper_inital_margin = 15;             // 上手初始保证金 
+    uint64                upper_maintenance_margin = 16;        // 上手维持保证金
+    PositionType          pos_type           = 17;              // 持仓类型，是否为昨仓
+    uint64                pre_margin          = 18;             // 上次占用保证金
+    uint64                used_margin         = 19;             // 占用保证金
+    BSDirectType          direct              = 20;             // 方向
+    HedgeFlagType         hedge               = 21;             // 投保标志
+    string                position_no         = 22;             // 本地持仓号
+    string                srv_flag            = 23;             // 服务器标识
+    string                order_no            = 24;             // 委托编码
+    string                match_id            = 25;             // 成交号
+    string                upper_no            = 26;             // 上手号
+    string                position_stream_no  = 27;             // 持仓流水号
+    uint64                local_time          = 28;             // 本地时间
+}
+
+
+message QueryPositionSummaryRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信息
+    string       account             = 2;       // 账户
+                                     
+    uint64       start_time_stamp    = 3;       // 发起请求的时间戳 
+    uint64       recv_req_time_stamp = 4;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 5;       // 发送数据的时间戳 
+    
+    repeated     PositionInfo positions   = 6;
+}
+
+// 查询持仓信息
+message QueryPositionReq
+{
+    uint64              session_id  = 1;    // 会话ID
+    string              account     = 2; 
+    common.ExchangeType exchange    = 3;
+    string              instr_code  = 4;
+    uint32              page_num    = 5;    // 页码
+    uint32              request_num = 6;    // 请求行数
+    uint64              start_time_stamp = 7;   // 发起请求的时间戳
+}
+
+message QueryPositionRsp
+{
+    TradeRetCode ret                 = 1;       // 业务处理返回信
+    string       account             = 2;       // 账户
+                                     
+    uint64       start_time_stamp    = 3;       // 发起请求的时间戳 
+    uint64       recv_req_time_stamp = 4;       // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 5;       // 发送数据的时间戳 
+    
+    repeated     PositionInfo positions   = 6;
+}
+
+// 查询成交
+message QueryDealReq
+{
+    uint64              session_id        = 1;     // 会话ID
+    string              account           = 2;     // 账户ID
+    common.ExchangeType exchange          = 3;     // 交易所id
+    string              instr_code        = 4;     // 合约ID
+    common.CategoryType category          = 5;
+    common.ProductType  product           = 6;     // 品种类别
+    
+    BSDirectType        direct            = 7;     // 方向
+    OffsetType          offset            = 8;     // 开平标志
+    string              upper_no          = 9;     // 上手号
+    string              exchange_no       = 10;     // 交易所委托序号
+
+    bool                is_add_one        = 11;
+    string              srv_flag          = 12;    // 服务器标志
+    
+    uint32              page_num          = 13;    // 页码
+    uint32              request_num       = 14;    // 请求行数
+
+    uint64              start_time_stamp  = 15;    // 发起请求的时间戳
+}
+
+// 成交信息
+message DealInfo
+{
+    string              account              = 1;   // 账户ID
+    string              instr_code           = 2;   // 合约ID
+    common.ExchangeType exchange             = 3;   // 交易所id
+    common.CurrencyType currency             = 4;   // 货币类型
+    common.CategoryType category             = 5;   // 商品大类
+    common.ProductType  product              = 6;   // 品种类别
+    uint32              precision            = 7;   // 精度
+    
+    BSDirectType        direct               = 8;   // 买卖方向
+    OffsetType          offset               = 9;   // 开平标志
+    string              date                 = 10;  // 成交日期
+    uint64              vol                  = 11;  // 成交数量
+    uint64              price                = 12;  // 成交价格
+    string              srv_flag             = 13;  // 服务器标识
+    string              order_no             = 14;  // 委托编码
+    string              order_system_no      = 15;  // 系统号
+    string              match_no             = 16;  // 本地成交序号
+    string              upper_match_no       = 17;  // 上手成交序号
+    string              exchage_match_no     = 18;  // 交易所成交序号
+    uint64              match_data_time      = 19;  // 成交时间
+    string              upper_match_datetime = 20;  // 上手成交时间
+    string              upper_no             = 21;  // 上手号
+    string              order_local_id       = 22;  // 本地委托序号
+    string              exchange_order_no    = 23;  // 交易所委托序号
+    bool                is_add_one           = 25;  // 是否为T+1单
+    uint64              commission           = 26;  // 手续费
+    uint64              close_pos_price      = 27;  // 指定平仓价格
+}
+
+message QueryDealRsp
+{
+    TradeRetCode ret                 = 1;    // 业务处理返回信
+    string       account             = 3;    // 账户
+                                     
+    uint64       start_time_stamp    = 4;    // 发起请求的时间戳 
+    uint64       recv_req_time_stamp = 5;    // 接收到请求的时间戳
+    uint64       rsp_time_stamp      = 6;    // 发送数据的时间戳 
+    
+    repeated     DealInfo deals      = 7;    // 成交信息
+}
+
+// 查询历史委托
+message QueryHisOrderReq
+{
+    uint64    session_id       = 1;   // 会话ID
+    string    account          = 2;   // 账号
+    string    begin_date       = 3;   // 开始日期 
+    string    end_date         = 4;   // 结束日期 
+    uint32    page_num         = 5;   // 页码
+    uint32    request_num      = 6;   // 请求行数
+    uint64    start_time_stamp = 7;   // 发起请求的时间戳
+}
+
+message QueryHisOrderRsp
+{
+    TradeRetCode ret              = 1;   // 业务处理返回信
+    string       account          = 3;   // 账户
+                                  
+    uint64   start_time_stamp     = 4;   // 发起请求的时间戳 
+    uint64   recv_req_time_stamp  = 5;   // 接收到请求的时间戳
+    uint64   rsp_time_stamp       = 6;   // 发送数据的时间戳 
+    
+    repeated FutureOrderInfo orders = 7;   // 委托信息
+}
+
+// 查询历史成交
+message QueryHisDealReq
+{
+    uint64    session_id       = 1;   // 会话ID
+    string    account          = 2;   // 账号
+    uint64    begin_date       = 3;   // 开始日期 
+    uint64    end_date         = 4;   // 结束日期 
+    uint32    page_num         = 5;   // 页码
+    uint32    request_num      = 6;   // 请求行数
+    uint64    start_time_stamp = 7;   // 发起请求的时间戳
+}
+
+message QueryHisDealRsp
+{
+    TradeRetCode ret                = 1;     // 业务处理返回信
+    string       account            = 2;     // 账户
+
+    uint64      start_time_stamp    = 3;     // 发起请求的时间戳 
+    uint64      recv_req_time_stamp = 4;     // 接收到请求的时间戳
+    uint64      rsp_time_stamp      = 5;     // 发送数据的时间戳 
+      
+    repeated    DealInfo deals      = 6;
+}
+
+// 查询历史持仓
+message QueryHisPositionReq
+{
+    uint64     session_id       = 1;   // 会话ID
+    string     account          = 2;   // 账号
+    uint64     date             = 3;   // 日期 YYYY-MM-DD
+    SettleFlag flag             = 4;   // 结算标志
+    uint32     page_num         = 5;   // 页码
+    uint32     request_num      = 6;   // 请求行数
+    uint64     start_time_stamp = 7;   // 发起请求的时间戳
+    
+}
+
+message QueryHisPositionRsp
+{
+    TradeRetCode ret                = 1;        // 业务处理返回信
+    string       account            = 2;        // 账户
+                                    
+    uint64      start_time_stamp    = 3;        // 发起请求的时间戳 
+    uint64      recv_req_time_stamp = 4;        // 接收到请求的时间戳
+    uint64      rsp_time_stamp      = 5;        // 发送数据的时间戳 
+    
+    repeated PositionInfo positions  = 6;       // 持仓信息
+}
+
+//--------------------------------------------------------------------------
+//----------------------委托------------------------------------------------
+message InsertOrderReq
+{
+    uint64                      session_id        = 1;          // 会话ID
+    string                      account           = 2;          // 账户ID
+    string                      instr_code        = 3;          // 合约ID
+    common.CategoryType         category          = 4; 
+    common.ProductType          product           = 5;          // 品种类别
+    common.ExchangeType         exchange          = 6;          // 交易所id
+    common.CurrencyType         currency          = 7;          // 货币类型
+    uint64                      price             = 8;          // 价格
+    uint32                      vol               = 9;          // 报单量
+    BSDirectType                direct            = 10;         // 方向
+    FutureOrderType             type              = 11;         // 委托类型
+    uint32                      precision         = 12;         // 精度
+    
+    OffsetType                  offset            = 13;         // 开平标志
+    HedgeFlagType               hedge             = 14;         // 投保标志
+    TimeConditionType           time_codition     = 15;         // 有效期类型
+    uint64                      expire_datetime   = 16;         // 指定有效期GTD时使用 time_t
+
+    DealVolumeConditionType     vol_cond_type     = 17;         // 成交量类型
+    ContingentConditionType     con_cond_type     = 18;         // 触发条件
+    string                      order_local_id    = 19;         // 本地委托序号
+    uint64                      stop_price        = 20;         // 触发价格
+    uint32                      min_clip_size     = 21;         // 冰山单最小随机量
+    uint32                      max_clip_size     = 22;         // 冰山单最大随机量
+
+    uint64                      local_time        = 23;         // 本地下单时间
+    uint64                      usr_data          = 24;         // 用户数据
+    bool                        is_add_one        = 25;         // t+1
+    
+    uint64                     start_time_stamp   = 26;         // 发起请求的时间戳
+}
+
+message InsertOrderRsp
+{
+    TradeRetCode              ret                 = 1;    // 业务处理返回信
+    string                    account             = 2;    // 账户ID
+    string                    instr_code          = 3;    // 合约ID
+    common.CategoryType       category            = 4; 
+    common.ProductType        product             = 5;    // 品种类别
+    common.ExchangeType       exchange            = 6;    // 交易所id
+    common.CurrencyType       currency            = 7;    // 货币类型
+    uint64                    price               = 8;    // 价格
+    uint32                    vol                 = 9;    // 报单量
+    BSDirectType              direct              = 10;   // 方向
+    FutureOrderType           type                = 11;   // 委托类型
+    uint32                    precision           = 12;   // 精度
+     
+    OffsetType                offset              = 13;   // 开平标志
+    HedgeFlagType             hedge               = 14;   // 投保标志
+    TimeConditionType         time_codition       = 15;   // 有效期类型
+    uint64                    expire_datetime     = 16;   // 指定有效期GTD时使用 time_t
+    
+    DealVolumeConditionType   vol_cond_type       = 17;   // 成交量类型
+    ContingentConditionType   con_cond_type       = 18;   // 触发条件
+    string                    order_local_id      = 19;   // 本地委托序号
+    uint64                    stop_price          = 20;   // 触发价格
+    uint32                    min_clip_size       = 21;   // 冰山单最小随机量
+    uint32                    max_clip_size       = 22;   // 冰山单最大随机量
+
+    uint64                    local_time          = 23;   // 本地下单时间
+    uint64                    usr_data            = 24;   // 用户数据
+    bool                      is_add_one          = 25;   // t+1
+    
+    uint64                    start_time_stamp    = 26;   // 发起请求的时间戳 
+    uint64                    recv_req_time_stamp = 27;   // 接收到请求的时间戳
+    uint64                    rsp_time_stamp      = 28;   // 发送数据的时间戳 
+}
+
+// 撤单
+message CancelOrderReq
+{
+    uint64              session_id        = 1;     // 会话ID
+    string              account           = 2;     // 账户ID
+    string              instr_code        = 3;     // 合约ID
+    common.ExchangeType exchange          = 4;     // 交易所id
+    string              order_no          = 5;     // 委托序号
+    string              srv_flag          = 6;     // 服务器标识
+    uint64              local_time        = 7;     // 委托时间
+    
+    uint64              start_time_stamp  = 8;     // 发起请求的时间戳 
+}
+
+// 撤单应答 
+message CancelOrderRsp
+{
+    TradeRetCode        ret                  = 1;  // 业务处理返回信息
+    string              account              = 2;  // 账户ID
+    string              instr_code           = 3;  // 合约ID
+    common.ExchangeType exchange             = 4;  // 交易所id
+    string              order_no             = 5;  // 委托序号
+    
+    uint64              start_time_stamp     = 6;  // 发起请求的时间戳 
+    uint64              recv_req_time_stamp  = 7;  // 接收到请求的时间戳
+    uint64              rsp_time_stamp       = 8;  // 发送数据的时间戳 
+    
+}
+
+// 改单
+message ModOrderReq
+{
+    InsertOrderReq orderReq = 1;    // 原委托请求，在原委托请求上发生变更
+    string         order_no = 2;    // 委托编码
+    string         srv_flag = 3;    // 服务器标识 
+}
+
+// 改单应答 
+message ModOrderRsp
+{
+    TradeRetCode        ret               = 1;    // 业务处理返回信
+    string              account           = 3;     // 账户ID
+    string              instr_code        = 4;     // 合约ID
+    common.ExchangeType exchange          = 5;     // 交易所id
+    string              order_no          = 6;     // 委托序号
+    
+    uint64              start_time_stamp     = 8;  // 发起请求的时间戳 
+    uint64              recv_req_time_stamp  = 9;  // 接收到请求的时间戳
+    uint64              rsp_time_stamp       = 10; // 发送数据的时间戳
+}
+
+message PositionProfit
+{
+    string      account            = 1;   // 账户ID
+    string      instr_code         = 2;
+    uint32      precision          = 3;    // 精度
+    string      position_id        = 4;    // 本地持仓号
+    string      position_stream_id = 5;    // 持仓号
+    uint64      profit             = 6;    // 盈亏
+    uint64      price              = 7;    // 计算价格
+}
+
+// 主推账断线通知
+message AccountDisConnect
+{
+    string account           = 1;  // 账户
+    bool   is_disconnect     = 2;  // 断线状态 
+    uint64 disconn_date_time = 3;  // 断线时间戳
+}
+
+// 查询费用请求
+message QueryFeeReq
+{
+    uint64 session_id             = 1;   // 会话ID
+    string account                = 3;     // 资金账号
+    common.ExchangeType exchange  = 4;     // 交易所id
+    string instr_code             = 5;     // 证券代码
+    uint32 precision              = 6;     // 精度
+    uint64 price                  = 7;     // 价格
+    uint64 qty                    = 8;     // 量
+    BSDirectType   direct         = 9;     // 方向
+    
+    uint64 start_time_stamp       = 10;    // 发起请求的时间戳 
+}
+
+message QueryFeeRsp
+{
+    string account                = 3;     // 资金账号
+    common.ExchangeType exchange  = 4;     // 交易所id
+    string instr_code             = 5;     // 证券代码
+    
+    uint64 charge                 = 6;     // 总费用
+    string name                   = 7;     // 费用名称
+    uint64 amt                    = 8;     // 费用数值
+    
+    TradeRetCode ret              = 9;
+    uint64       start_time_stamp     = 10;  // 发起请求的时间戳 
+    uint64       recv_req_time_stamp  = 11;  // 接收到请求的时间戳
+    uint64       rsp_time_stamp       = 12; // 发送数据的时间戳
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,18 +1,14 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
 
-import os
-
-
-with open("F:/Python_Demo/1.txt","w") as f:
-   
-    #print(f.readlines())
-    f.write("hello")
- 	#print(f.read())
-
-print(os.getcwd())
+class ClassName(object):
+    """docstring for ClassName"""
+    def __init__(self, arg):
+        super(ClassName, self).__init__()
+        self.arg = arg
+        
+    def fire(self, *, reverse=False):
+        print("222222222222222222222222")
+        print(*)
 
 
-
-
-
+a = ClassName("123")
+a.fire()
